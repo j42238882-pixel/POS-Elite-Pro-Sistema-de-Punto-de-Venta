@@ -1,0 +1,55 @@
+name: 🚀 CI/CD - Build & Despliegue en Netlify
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    name: 🛠️ Compilación TypeScript & Despliegue Netlify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Instalar dependencias
+        run: npm install
+
+      - name: 🔍 Verificación de Tipos TypeScript (Strict Check)
+        run: npx tsc --noEmit
+
+      - name: 🏗️ Compilar API TypeScript
+        run: npm run build:ts
+
+      - name: 🎨 Compilar Tailwind CSS (si está presente)
+        run: |
+          if [ -f "tailwind/tailwind.config.js" ]; then
+            npm run build:css || echo "Tailwind compilado o pre-empaquetado"
+          fi
+
+      - name: 🚀 Despliegue Automatizado a Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: '.'
+          production-branch: 'main'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy desde GitHub Actions CI/CD [${{ github.sha }}]"
+          enable-pull-request-comment: true
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 5

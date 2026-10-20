@@ -1,0 +1,984 @@
+/* ==========================================================================
+   PORTFOLIO SHOWCASE & CASE STUDY STYLESHEET
+   High-End Engineering Portfolio Design
+   Authors: Juan Urbina, Daniel Rodríguez, Maykelis Meléndez
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap');
+
+:root {
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Outfit', 'Inter', sans-serif;
+
+  /* Theme: Dark Tech Slate (Default) */
+  --p-bg: #070b14;
+  --p-surface: #0d1424;
+  --p-surface-card: #121c33;
+  --p-surface-hover: #192644;
+  --p-border: #1e2d4d;
+  --p-border-bright: #2d4373;
+
+  --p-text: #f1f5f9;
+  --p-text-muted: #94a3b8;
+  --p-text-dim: #64748b;
+
+  --p-primary: #38bdf8;
+  --p-primary-hover: #0ea5e9;
+  --p-primary-light: rgba(56, 189, 248, 0.15);
+  --p-secondary: #818cf8;
+  --p-accent: #a855f7;
+  --p-emerald: #10b981;
+  --p-emerald-light: rgba(16, 185, 129, 0.15);
+  --p-amber: #f59e0b;
+  --p-amber-light: rgba(245, 158, 11, 0.15);
+  --p-danger: #ef4444;
+  --p-danger-light: rgba(239, 68, 68, 0.15);
+
+  --p-gradient-brand: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #a855f7 100%);
+  --p-gradient-card: linear-gradient(180deg, rgba(18, 28, 51, 0.8) 0%, rgba(13, 20, 36, 0.95) 100%);
+  --p-gradient-glow: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+
+  --p-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --p-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --p-shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
+  --p-shadow-glow: 0 0 35px rgba(56, 189, 248, 0.25);
+  --p-shadow-glow-purple: 0 0 35px rgba(168, 85, 247, 0.25);
+
+  --p-radius-sm: 8px;
+  --p-radius-md: 12px;
+  --p-radius-lg: 18px;
+  --p-radius-full: 9999px;
+
+  --p-transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.light-mode {
+  --p-bg: #f8fafc;
+  --p-surface: #ffffff;
+  --p-surface-card: #f1f5f9;
+  --p-surface-hover: #e2e8f0;
+  --p-border: #cbd5e1;
+  --p-border-bright: #94a3b8;
+
+  --p-text: #0f172a;
+  --p-text-muted: #475569;
+  --p-text-dim: #64748b;
+
+  --p-primary: #0284c7;
+  --p-primary-hover: #0369a1;
+  --p-secondary: #4f46e5;
+  --p-accent: #9333ea;
+
+  --p-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --p-shadow-glow: 0 0 30px rgba(2, 132, 199, 0.15);
+}
+
+/* ==========================================================================
+   Base & Reset
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.portfolio-body {
+  font-family: var(--font-body);
+  background-color: var(--p-bg);
+  color: var(--p-text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
+  background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--p-text);
+  letter-spacing: -0.02em;
+}
+
+.text-gradient {
+  background: var(--p-gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+.p-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(7, 11, 20, 0.9);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--p-border);
+  padding: 12px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+body.light-mode .p-navbar {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.p-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--p-text);
+}
+
+.p-logo-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--p-radius-md);
+  background: var(--p-gradient-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);
+}
+
+.p-brand-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.p-brand-sub {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--p-primary);
+  font-weight: 700;
+}
+
+.p-nav-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  align-items: center;
+}
+
+.p-nav-link {
+  color: var(--p-text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: var(--p-transition);
+}
+
+.p-nav-link:hover {
+  color: var(--p-primary);
+}
+
+.p-nav-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.p-rate-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  padding: 5px 12px;
+  border-radius: var(--p-radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--p-transition);
+}
+
+.p-rate-pill:hover {
+  border-color: var(--p-primary);
+  color: var(--p-primary);
+}
+
+.p-rate-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--p-emerald);
+  box-shadow: 0 0 6px var(--p-emerald);
+}
+
+.p-theme-toggle {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  color: var(--p-text);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--p-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--p-transition);
+}
+
+.p-theme-toggle:hover {
+  border-color: var(--p-primary);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.p-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--p-radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--p-transition);
+  border: 1px solid transparent;
+  font-family: inherit;
+  user-select: none;
+}
+
+.p-btn-primary {
+  background: var(--p-gradient-brand);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+}
+
+.p-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.5);
+}
+
+.p-btn-secondary {
+  background: var(--p-surface-card);
+  color: var(--p-text);
+  border-color: var(--p-border);
+}
+
+.p-btn-secondary:hover {
+  background: var(--p-surface-hover);
+  border-color: var(--p-border-bright);
+  transform: translateY(-2px);
+}
+
+.p-btn-lg {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: var(--p-radius-lg);
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.p-hero {
+  padding: 130px 24px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.p-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--p-primary-light);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 6px 16px;
+  border-radius: var(--p-radius-full);
+  color: var(--p-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.p-hero-title {
+  font-size: clamp(2.3rem, 5.5vw, 3.8rem);
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+.p-hero-desc {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: var(--p-text-muted);
+  max-width: 820px;
+  margin: 0 auto 30px;
+}
+
+.p-team-byline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  padding: 6px 18px;
+  border-radius: var(--p-radius-full);
+  font-size: 0.85rem;
+  color: var(--p-text);
+  margin-bottom: 30px;
+}
+
+.p-hero-cta {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+/* Floating Stats Strip */
+.p-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.p-stat-card {
+  background: var(--p-gradient-card);
+  border: 1px solid var(--p-border);
+  padding: 18px;
+  border-radius: var(--p-radius-lg);
+  text-align: center;
+  backdrop-filter: blur(8px);
+  transition: var(--p-transition);
+}
+
+.p-stat-card:hover {
+  border-color: var(--p-primary);
+  transform: translateY(-3px);
+  box-shadow: var(--p-shadow-glow);
+}
+
+.p-stat-number {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  font-family: var(--font-heading);
+}
+
+.p-stat-label {
+  font-size: 0.8rem;
+  color: var(--p-text-muted);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Sections Standard Layout
+   ========================================================================== */
+.p-section {
+  padding: 70px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.p-section-header {
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto 40px;
+}
+
+.p-section-subtitle {
+  color: var(--p-primary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.p-section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.p-section-desc {
+  color: var(--p-text-muted);
+  font-size: 0.98rem;
+}
+
+/* ==========================================================================
+   TEAM SECTION (Juan Urbina, Daniel Rodríguez, Maykelis Meléndez)
+   ========================================================================== */
+.p-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.p-team-card {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  border-radius: var(--p-radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--p-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.p-team-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--p-primary);
+  box-shadow: var(--p-shadow-md);
+}
+
+.p-team-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--p-gradient-brand);
+}
+
+.p-member-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.p-member-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--p-radius-md);
+  background: var(--p-gradient-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+  flex-shrink: 0;
+}
+
+.p-member-name {
+  font-size: 1.25rem;
+  margin-bottom: 2px;
+}
+
+.p-member-role {
+  color: var(--p-primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.p-member-bio {
+  color: var(--p-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.p-member-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.p-member-badge {
+  background: var(--p-surface-hover);
+  color: var(--p-text);
+  border: 1px solid var(--p-border);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--p-radius-sm);
+}
+
+/* ==========================================================================
+   PRODUCT GALLERY SECTION (Catálogo Comercial & Escaparate)
+   ========================================================================== */
+.p-gallery-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.p-gallery-pill {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  color: var(--p-text-muted);
+  padding: 8px 16px;
+  border-radius: var(--p-radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--p-transition);
+  user-select: none;
+}
+
+.p-gallery-pill:hover {
+  color: var(--p-text);
+  border-color: var(--p-border-bright);
+}
+
+.p-gallery-pill.active {
+  background: var(--p-primary-light);
+  color: var(--p-primary);
+  border-color: var(--p-primary);
+}
+
+.p-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.p-gallery-card {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  border-radius: var(--p-radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--p-transition);
+}
+
+.p-gallery-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--p-primary);
+  box-shadow: var(--p-shadow-md);
+}
+
+.p-gallery-img-box {
+  width: 100%;
+  height: 120px;
+  background: var(--p-surface-hover);
+  border-radius: var(--p-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.p-gallery-stock-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--p-radius-full);
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+}
+
+.p-gallery-stock-badge.low {
+  background: var(--p-amber-light);
+  color: var(--p-amber);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.p-gallery-category {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--p-primary);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.p-gallery-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  flex-grow: 1;
+}
+
+.p-gallery-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px dashed var(--p-border);
+  padding-top: 10px;
+  margin-bottom: 12px;
+}
+
+.p-gallery-price-usd {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--p-primary);
+}
+
+.p-gallery-price-ves {
+  font-size: 0.8rem;
+  color: var(--p-text-muted);
+  font-weight: 600;
+}
+
+.p-gallery-add-btn {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--p-radius-md);
+  border: 1px solid var(--p-border);
+  background: var(--p-surface-hover);
+  color: var(--p-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--p-transition);
+}
+
+.p-gallery-add-btn:hover {
+  background: var(--p-primary);
+  color: #ffffff;
+  border-color: var(--p-primary);
+}
+
+/* ==========================================================================
+   INTEGRATED LIVE POS SIMULATOR WORKSTATION
+   ========================================================================== */
+.p-simulator-wrapper {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border-bright);
+  border-radius: var(--p-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--p-shadow-lg), var(--p-shadow-glow);
+}
+
+.p-simulator-header {
+  background: var(--p-surface);
+  border-bottom: 1px solid var(--p-border);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.p-sim-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.p-sim-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.p-sim-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.p-sim-tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--p-surface-hover);
+  padding: 3px;
+  border-radius: var(--p-radius-md);
+}
+
+.p-sim-tab-btn {
+  padding: 6px 14px;
+  border-radius: var(--p-radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--p-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--p-transition);
+}
+
+.p-sim-tab-btn.active {
+  background: var(--p-surface-card);
+  color: var(--p-primary);
+  box-shadow: var(--p-shadow-sm);
+}
+
+.p-simulator-body {
+  padding: 20px;
+  min-height: 520px;
+}
+
+/* POS Layout Inside Simulator */
+.sim-pos-layout {
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .sim-pos-layout {
+    flex-direction: column;
+  }
+}
+
+/* ==========================================================================
+   Architecture Grid & Problem/Solution
+   ========================================================================== */
+.p-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.p-compare-card {
+  padding: 28px;
+  border-radius: var(--p-radius-lg);
+  border: 1px solid var(--p-border);
+  background: var(--p-gradient-card);
+}
+
+.p-compare-card.problem { border-left: 4px solid var(--p-danger); }
+.p-compare-card.solution { border-left: 4px solid var(--p-emerald); box-shadow: var(--p-shadow-glow); }
+
+.p-compare-title {
+  font-size: 1.25rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.p-compare-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.p-compare-item {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--p-text-muted);
+}
+
+.p-compare-item b {
+  color: var(--p-text);
+}
+
+.p-arch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.p-arch-card {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  padding: 22px;
+  border-radius: var(--p-radius-lg);
+  transition: var(--p-transition);
+}
+
+.p-arch-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--p-secondary);
+  box-shadow: var(--p-shadow-glow-purple);
+}
+
+.p-arch-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--p-radius-md);
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 14px;
+  color: var(--p-secondary);
+}
+
+.p-arch-title {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.p-arch-desc {
+  font-size: 0.85rem;
+  color: var(--p-text-muted);
+  line-height: 1.5;
+}
+
+/* Tech Stack Badges */
+.p-tech-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.p-tech-pill {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-border);
+  padding: 8px 16px;
+  border-radius: var(--p-radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--p-text);
+  transition: var(--p-transition);
+}
+
+.p-tech-pill:hover {
+  border-color: var(--p-primary);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Modals, Toasts & Print Overrides for Simulator
+   ========================================================================== */
+#modalOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(7, 11, 20, 0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: var(--p-surface);
+  color: var(--p-text);
+  padding: 24px;
+  border-radius: var(--p-radius-lg);
+  width: 90%;
+  max-width: 440px;
+  border: 1px solid var(--p-border-bright);
+  box-shadow: var(--p-shadow-lg);
+}
+
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background: #0f172a;
+  color: #ffffff;
+  text-align: center;
+  border-radius: var(--p-radius-full);
+  padding: 10px 20px;
+  position: fixed;
+  z-index: 10000;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(20px);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: var(--p-shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+#toast.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Footer */
+.p-footer {
+  border-top: 1px solid var(--p-border);
+  padding: 36px 24px;
+  text-align: center;
+  color: var(--p-text-dim);
+  font-size: 0.85rem;
+  background: var(--p-surface);
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+  .p-nav-menu { display: none; }
+}
+
+/* API Status Badge */
+.api-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.api-status-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.api-status-badge.online {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+}
+
+.api-status-badge.online .dot {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.api-status-badge.offline {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #f59e0b;
+}
+
+.api-status-badge.offline .dot {
+  background: #f59e0b;
+}
+

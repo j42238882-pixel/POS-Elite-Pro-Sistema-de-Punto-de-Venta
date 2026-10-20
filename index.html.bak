@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Elite Pro - Configuración de Impresión</title>
+    <style>
+        :root {
+            --primary: #2563eb; --bg: #f3f4f6; --card-bg: #ffffff;
+            --text: #1f2937; --border: #e5e7eb; --danger: #ef4444; 
+            --success: #10b981; --warning: #f59e0b; --debt: #8b5cf6;
+            --input-bg: #ffffff;
+        }
+
+        body.dark-mode {
+            --bg: #111827; --card-bg: #1f2937;
+            --text: #f9fafb; --border: #374151;
+            --input-bg: #374151;
+        }
+
+        body { 
+            font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); 
+            margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        nav { 
+            background: var(--primary); color: white; padding: 10px 20px; 
+            display: flex; gap: 15px; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            flex-shrink: 0; 
+        }
+        .nav-link { color: rgba(255,255,255,0.8); cursor: pointer; font-weight: 600; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; }
+        .nav-link.active { color: white; background: rgba(255,255,255,0.2); }
+        
+        .theme-toggle, .lock-btn { cursor: pointer; font-size: 1.2rem; padding: 5px; border-radius: 50%; transition: transform 0.3s; user-select: none; }
+        .lock-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+        .view { display: none; flex: 1; padding: 20px; overflow-y: auto; }
+        .view.active { display: flex; flex-direction: column; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+        .p-item { 
+            background: var(--card-bg); padding: 12px; border-radius: 10px; text-align: center; 
+            cursor: pointer; user-select: none; transition: 0.2s; border: 1px solid var(--border);
+        }
+        .p-item:hover { border-color: var(--primary); }
+        .stock-low { border: 2px solid var(--danger) !important; background: rgba(239, 68, 68, 0.1) !important; }
+        
+        .card { background: var(--card-bg); padding: 15px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid var(--border); }
+        .history-card { border-left: 6px solid var(--primary); }
+        .history-card.activa { border-left-color: var(--success); }
+        .history-card.credito { border-left-color: var(--debt); }
+        
+        .btn { padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-debt { background: var(--debt); color: white; }
+        .btn-neutral { background: var(--border); color: var(--text); }
+        .btn-full { width: 100%; padding: 12px; margin-top: 8px; }
+        .btn-sm { padding: 4px 8px; font-size: 0.8rem; border-radius: 4px; }
+
+        input, select { 
+            padding: 10px; border: 1px solid var(--border); border-radius: 6px; 
+            width: 100%; box-sizing: border-box; margin-bottom: 8px; font-family: inherit;
+            background: var(--input-bg); color: var(--text);
+            user-select: auto !important; 
+        }
+
+        #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
+        .modal-content { background: var(--card-bg); color: var(--text); padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+
+        #toast { visibility: hidden; min-width: 200px; background: #333; color: #fff; text-align: center; border-radius: 5px; padding: 12px; position: fixed; z-index: 10000; left: 50%; bottom: 20px; transform: translateX(-50%); }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        
+        .rate-btn { font-size:0.8rem; background:rgba(0,0,0,0.2); padding:5px 10px; border-radius:20px; margin-right:10px; cursor:pointer; border:1px solid transparent; }
+        
+        .cart-item { display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; margin-bottom:8px; border-bottom:1px dashed var(--border); padding-bottom:8px; }
+        .cart-controls { display:flex; gap:5px; align-items:center; }
+        .qty-input { width: 65px !important; padding: 4px !important; text-align: center; margin: 0 !important; font-weight: bold; border-color: var(--primary) !important; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h3 id="brandName" style="flex-grow:1; margin:0;">Cargando...</h3>
+    <div class="rate-btn" onclick="openRateModal()">💱 Tasa: Bs. <span id="navRate">0.00</span></div>
+    <div class="nav-link active" id="navPos" onclick="showView('posView', this)">🛒 Venta</div>
+    <div class="nav-link" id="navHistory" onclick="showView('historyView', this)">📊 Historial</div>
+    <div class="nav-link" id="navAdmin" onclick="showView('adminView', this)">⚙️ Admin</div>
+    <div class="lock-btn" id="lockBtn" onclick="lockSystem()" style="display:none;">🔓</div>
+    <div class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</div>
+</nav>
+
+<div id="toast"></div>
+<div id="modalOverlay" onclick="if(event.target === this) closeModal()"><div id="modalBody" class="modal-content" onclick="event.stopPropagation()"></div></div>
+
+<div class="main-container">
+    <div id="posView" class="view active">
+        <div style="display: flex; gap: 15px; height: 100%;">
+            <div style="flex:2; overflow-y:auto;">
+                <input type="text" id="posSearch" placeholder="🔍 Buscar producto..." oninput="renderPOS()">
+                <div id="posGrid" class="products-grid"></div>
+            </div>
+            <div style="flex:1; background:var(--card-bg); padding:15px; border-radius:12px; display:flex; flex-direction:column; border: 1px solid var(--border);">
+                <h4>Carrito</h4>
+                <div style="display:flex; gap:5px; margin-bottom:8px;">
+                    <input type="text" id="posSearchClient" placeholder="🔍 Cliente..." oninput="renderClients()" style="flex:1; margin:0;">
+                    <select id="posClientSelect" style="flex:1; margin:0;"></select>
+                </div>
+                <div id="posCart" style="flex:1; overflow-y:auto; margin-top:5px;"></div>
+                <div style="margin:10px 0; border-top:2px solid var(--border); padding-top:10px;">
+                    <div style="display:flex; justify-content:space-between; opacity:0.8;">Total VES: <span id="posTotalVES">Bs. 0.00</span></div>
+                    <div style="display:flex; justify-content:space-between; font-size:1.5rem; font-weight:bold; color:var(--primary);">Total USD: <span id="posTotalUSD">$0.00</span></div>
+                </div>
+                <button class="btn btn-success btn-full" onclick="openPayModal()">REGISTRAR VENTA</button>
+                <button class="btn btn-neutral btn-full" style="font-size:0.7rem; opacity:0.6" onclick="clearCart()">Vaciar Carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="historyView" class="view">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+            <div class="card" style="background:var(--success); color:white; border:none">
+                <small>VENTAS NETAS HOY (USD)</small>
+                <h2 id="sumDaily" style="margin:0">$0.00</h2>
+            </div>
+            <div class="card" style="background:var(--debt); color:white; border:none">
+                <small>TOTAL CRÉDITOS PENDIENTES (USD)</small>
+                <h2 id="sumDebt" style="margin:0">$0.00</h2>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary btn-full" style="margin-bottom: 15px;" onclick="openCierreModal()">🖨️ GENERAR CIERRE DE CAJA DEL DÍA</button>
+        
+        <input type="text" id="searchHist" placeholder="🔍 Buscar por Nº Ticket o cliente..." oninput="renderHistory()">
+        <div id="historyList"></div>
+    </div>
+
+    <div id="adminView" class="view">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+            <div class="card">
+                <h4>Gestión de Productos</h4>
+                <button class="btn btn-primary btn-full" onclick="openProductModal()">+ Nuevo Producto</button>
+                <div id="pTable" style="margin-top:15px; max-height: 400px; overflow-y: auto;"></div>
+            </div>
+            <div class="card">
+                <h4>Configuración General</h4>
+                <input type="text" id="configStoreName" placeholder="Nombre del Negocio">
+                <button class="btn btn-primary btn-full" onclick="updateStoreName()">Guardar Nombre</button>
+                <hr>
+                
+                <h4>🖨️ Ajustes de Ticket Térmico</h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div>
+                        <label style="font-size:0.7rem;">Ancho (Ej: 58mm o 80mm)</label>
+                        <input type="text" id="configTicketWidth" placeholder="Ej: 58mm">
+                    </div>
+                    <div>
+                        <label style="font-size:0.7rem;">Letra (Ej: 12px)</label>
+                        <input type="text" id="configTicketFontSize" placeholder="Ej: 12px">
+                    </div>
+                </div>
+                <button class="btn btn-warning btn-full" onclick="updatePrintSettings()">Guardar Ajustes Ticket</button>
+                <hr>
+
+                <h4>Clientes</h4>
+                <button class="btn btn-warning btn-full" onclick="openCustomerModal()">+ Nuevo Cliente</button>
+                <div id="cTable" style="margin-top:10px; max-height: 250px; overflow-y: auto;"></div>
+                <hr>
+                <input type="password" id="newAdminPass" placeholder="Nueva clave admin">
+                <button class="btn btn-danger btn-full" onclick="changePassword()">Actualizar Seguridad</button>
+                <hr>
+                <h4>💾 Copia de Seguridad</h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <button class="btn btn-primary btn-full" style="margin: 0;" onclick="exportBackup()">Exportar Datos</button>
+                    <button class="btn btn-warning btn-full" style="margin: 0;" onclick="triggerImport()">Importar Datos</button>
+                </div>
+                <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importBackup(event)">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let crypto, fs, path, os;
+    try {
+        crypto = require('crypto');
+        fs = require('fs');
+        path = require('path');
+        os = require('os');
+    } catch (e) {
+        console.warn("Node.js core modules not available, database physical storage will not work");
+    }
+
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str).replace(/[&<>'"]/g, 
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+        );
+    }
+
+    function hashPIN(pin) {
+        if (crypto && crypto.createHash) {
+            return crypto.createHash('sha256').update(pin).digest('hex');
+        }
+        // Fallback hashing
+        let hash = 0;
+        for (let i = 0; i < pin.length; i++) {
+            const char = pin.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return "fallback_" + Math.abs(hash);
+    }
+
+    let dbDir = "";
+    let dbPath = "";
+    if (fs && path && os) {
+        dbDir = path.join(os.homedir(), 'POS-Elite-Data');
+        try {
+            if (!fs.existsSync(dbDir)) {
+                fs.mkdirSync(dbDir, { recursive: true });
+            }
+            dbPath = path.join(dbDir, 'pos_db.json');
+        } catch (err) {
+            console.error("Error al crear carpeta de base de datos:", err);
+        }
+    }
+
+    let products = [], customers = [], sales = [], cart = [], storeName = "ELITE POS", exchangeRate = 1.0;
+    let invoiceCounter = 1; 
+    let adminPass = "1234", isAdminUnlocked = false; 
+    let ticketWidth = "58mm";
+    let ticketFontSize = "12px";
+
+    function init() {
+        let dbData = null;
+        
+        // 1. Cargar del archivo físico JSON si fs está disponible
+        if (fs && dbPath && fs.existsSync(dbPath)) {
+            try {
+                dbData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+            } catch (err) {
+                console.error("Error al leer base de datos fisica:", err);
+            }
+        }
+        
+        // 2. Si no hay archivo físico pero hay datos en localStorage, migrar
+        if (!dbData && (localStorage.getItem('pos_p') || localStorage.getItem('pos_c') || localStorage.getItem('pos_s'))) {
+            dbData = {
+                products: JSON.parse(localStorage.getItem('pos_p')) || [],
+                customers: JSON.parse(localStorage.getItem('pos_c')) || [{id:"0", name:"Consumidor Final"}],
+                sales: JSON.parse(localStorage.getItem('pos_s')) || [],
+                storeName: localStorage.getItem('pos_name') || "ELITE POS",
+                exchangeRate: parseFloat(localStorage.getItem('pos_rate')) || 36.00,
+                invoiceCounter: parseInt(localStorage.getItem('pos_invoice_counter')) || 1,
+                ticketWidth: localStorage.getItem('pos_t_width') || "58mm",
+                ticketFontSize: localStorage.getItem('pos_t_font') || "12px",
+                adminPass: localStorage.getItem('pos_pass') || hashPIN("1234")
+            };
+            
+            // Guardar inmediatamente en disco para consolidar la migración si fs está activo
+            if (fs && dbPath) {
+                try {
+                    fs.writeFileSync(dbPath, JSON.stringify(dbData, null, 2), 'utf8');
+                    setTimeout(() => { showToast("¡Datos migrados a disco con éxito! 💾"); }, 500);
+                } catch (e) {
+                    console.error("Error al guardar archivo migrado:", e);
+                }
+            }
+        }
+        
+        // 3. Asignar los datos cargados o valores por defecto
+        if (dbData) {
+            products = dbData.products || [];
+            customers = dbData.customers || [{id:"0", name:"Consumidor Final"}];
+            sales = dbData.sales || [];
+            storeName = dbData.storeName || "ELITE POS";
+            exchangeRate = dbData.exchangeRate || 36.00;
+            invoiceCounter = dbData.invoiceCounter || 1;
+            ticketWidth = dbData.ticketWidth || "58mm";
+            ticketFontSize = dbData.ticketFontSize || "12px";
+            adminPass = dbData.adminPass || hashPIN("1234");
+        } else {
+            // Cargar de localStorage en caso de que fs no esté disponible (fallback puro de navegador)
+            products = JSON.parse(localStorage.getItem('pos_p')) || [];
+            customers = JSON.parse(localStorage.getItem('pos_c')) || [{id:"0", name:"Consumidor Final"}];
+            sales = JSON.parse(localStorage.getItem('pos_s')) || [];
+            storeName = localStorage.getItem('pos_name') || "ELITE POS";
+            exchangeRate = parseFloat(localStorage.getItem('pos_rate')) || 36.00;
+            invoiceCounter = parseInt(localStorage.getItem('pos_invoice_counter')) || 1; 
+            ticketWidth = localStorage.getItem('pos_t_width') || "58mm";
+            ticketFontSize = localStorage.getItem('pos_t_font') || "12px";
+            adminPass = localStorage.getItem('pos_pass') || hashPIN("1234");
+        }
+
+        // Si la clave no es un hash SHA-256 (64 caracteres hex) o no empieza con "fallback_", la hasheamos y guardamos
+        if (!/^[a-f0-9]{64}$/i.test(adminPass) && !adminPass.startsWith("fallback_")) {
+            adminPass = hashPIN(adminPass);
+            if (fs && dbPath) {
+                // Guardar PIN hasheado en disco
+                save();
+            } else {
+                localStorage.setItem('pos_pass', adminPass);
+            }
+        }
+        
+        // Cargar valores en inputs de admin
+        document.getElementById('configTicketWidth').value = ticketWidth;
+        document.getElementById('configTicketFontSize').value = ticketFontSize;
+
+        document.getElementById('brandName').innerText = "🚀 " + storeName;
+        document.getElementById('configStoreName').value = storeName;
+        document.getElementById('navRate').innerText = exchangeRate.toFixed(2);
+        if(localStorage.getItem('pos_theme') === 'dark') document.body.classList.add('dark-mode');
+        renderPOS(); renderClients();
+    }
+
+    const save = () => {
+        try {
+            if (fs && dbPath) {
+                const dataToSave = {
+                    products,
+                    customers,
+                    sales,
+                    storeName,
+                    exchangeRate,
+                    invoiceCounter,
+                    ticketWidth,
+                    ticketFontSize,
+                    adminPass
+                };
+                fs.writeFileSync(dbPath, JSON.stringify(dataToSave, null, 2), 'utf8');
+            } else {
+                // Fallback a localStorage si fs no está disponible
+                localStorage.setItem('pos_p', JSON.stringify(products));
+                localStorage.setItem('pos_c', JSON.stringify(customers));
+                localStorage.setItem('pos_s', JSON.stringify(sales));
+                localStorage.setItem('pos_name', storeName);
+                localStorage.setItem('pos_rate', exchangeRate);
+                localStorage.setItem('pos_invoice_counter', invoiceCounter);
+                localStorage.setItem('pos_t_width', ticketWidth);
+                localStorage.setItem('pos_t_font', ticketFontSize);
+                localStorage.setItem('pos_pass', adminPass);
+            }
+        } catch (e) {
+            alert("⚠️ ERROR CRÍTICO AL GUARDAR DATOS: " + e.message);
+        }
+    };
+
+    function updatePrintSettings() {
+        ticketWidth = document.getElementById('configTicketWidth').value || "58mm";
+        ticketFontSize = document.getElementById('configTicketFontSize').value || "12px";
+        save();
+        showToast("Ajustes de impresión guardados ✅");
+    }
+
+    function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+
+    function openLoginModal(v, el) {
+        document.getElementById('modalBody').innerHTML = `
+            <h3>🔒 Acceso Restringido</h3>
+            <input type="password" id="loginPin" style="text-align:center; font-size:1.5rem;" placeholder="PIN">
+            <button class="btn btn-primary btn-full" onclick="checkLogin('${v}', '${el.id}')">ENTRAR</button>
+            <button class="btn btn-neutral btn-full" onclick="closeModal()">CANCELAR</button>`;
+        document.getElementById('modalOverlay').style.display = 'flex';
+        setTimeout(() => { document.getElementById('loginPin').focus(); }, 150);
+        document.getElementById('loginPin').onkeyup = (e) => { if(e.key === "Enter") checkLogin(v, el.id); };
+    }
+
+    function checkLogin(v, navId) {
+        let inputPin = document.getElementById('loginPin').value;
+        if(hashPIN(inputPin) === adminPass) {
+            isAdminUnlocked = true; document.getElementById('lockBtn').style.display = 'inline-block';
+            closeModal(); showView(v, document.getElementById(navId));
+        } else showToast("Clave Incorrecta ❌");
+    }
+
+    function openRateModal() {
+        document.getElementById('modalBody').innerHTML = `
+            <h3>💱 Ajustar Tasa</h3>
+            <input type="number" step="0.01" id="newRateVal" value="${exchangeRate}" style="text-align:center; font-size:1.5rem;">
+            <button class="btn btn-success btn-full" onclick="saveNewRate()">GUARDAR TASA</button>
+            <button class="btn btn-neutral btn-full" onclick="closeModal()">CANCELAR</button>`;
+        document.getElementById('modalOverlay').style.display = 'flex';
+        setTimeout(() => document.getElementById('newRateVal').focus(), 150);
+    }
+
+    function saveNewRate() {
+        let r = parseFloat(document.getElementById('newRateVal').value);
+        if(r > 0) { exchangeRate = r; document.getElementById('navRate').innerText = r.toFixed(2); save(); updateCartUI(); closeModal(); }
+    }
+
+    function renderPOS() {
+        let q = document.getElementById('posSearch').value.toLowerCase();
+        document.getElementById('posGrid').innerHTML = products.filter(p => p.name.toLowerCase().includes(q)).map(p => `
+            <div class="p-item ${p.stock <= 5 ? 'stock-low' : ''}" onclick="addToCart(${p.id})">
+                <small>Stk: ${p.stock}</small><br><b>${escapeHTML(p.name)}</b><br>$${p.price.toFixed(2)}
+            </div>`).join('');
+    }
+
+    function addToCart(id) {
+        let p = products.find(x => x.id === id);
+        if(!p || p.stock <= 0) return showToast("⚠️ Sin existencias");
+        
+        let item = cart.find(x => x.id === id);
+        let qtyToAdd = p.stock >= 1 ? 1 : p.stock;
+        
+        if(item) {
+            item.qty = Number((item.qty + qtyToAdd).toFixed(3));
+        } else {
+            cart.push({...p, qty: qtyToAdd});
+        }
+        p.stock = Number((p.stock - qtyToAdd).toFixed(3));
+        updateCartUI();
+    }
+
+    function manualCartQty(id, value, event) {
+        let item = cart.find(x => x.id === id), prod = products.find(x => x.id === id);
+        if(!item || !prod) return;
+        if (value === "" || value === "." || value.endsWith(".")) return;
+        let n = parseFloat(value); 
+        if(isNaN(n) || n < 0) return;
+        let availableTotal = Number((prod.stock + item.qty).toFixed(3));
+        if(n <= availableTotal) { 
+            item.qty = n; 
+            prod.stock = Number((availableTotal - n).toFixed(3)); 
+        } else { 
+            item.qty = availableTotal; 
+            prod.stock = 0; 
+            showToast("Máximo: " + item.qty); 
+            if (event && event.target) event.target.value = availableTotal; 
+        }
+        updateCartTotalsOnly(); renderPOS();
+    }
+
+    function updateCartTotalsOnly() {
+        let total = cart.reduce((a,b)=>a+(b.price*b.qty),0);
+        document.getElementById('posTotalUSD').innerText = `$${total.toFixed(2)}`;
+        document.getElementById('posTotalVES').innerText = `Bs. ${(total * exchangeRate).toFixed(2)}`;
+    }
+
+    function updateCartUI() {
+        document.getElementById('posCart').innerHTML = cart.map(i => `
+            <div class="cart-item">
+                <div style="flex:1"><b>${escapeHTML(i.name)}</b><br>$${(i.price*i.qty).toFixed(2)}</div>
+                <div class="cart-controls">
+                    <input type="number" step="any" class="qty-input" value="${i.qty}" oninput="manualCartQty(${i.id}, this.value, event)">
+                    <button class="btn btn-danger btn-sm" onclick="removeCartItem(${i.id})">✖</button>
+                </div>
+            </div>`).join('');
+        updateCartTotalsOnly(); renderPOS();
+    }
+
+    function removeCartItem(id) {
+        let idx = cart.findIndex(x => x.id === id), item = cart[idx], prod = products.find(x => x.id === id);
+        prod.stock = Number((prod.stock + item.qty).toFixed(3));
+        cart.splice(idx, 1); updateCartUI();
+    }
+
+    function openPayModal() {
+        if(!cart.length) return;
+        document.getElementById('modalBody').innerHTML = `
+            <h3>Finalizar Venta</h3>
+            
+            <div style="text-align: left; margin: 15px 0;">
+                <label style="font-weight: bold; font-size: 0.9rem;">Forma de Pago (Solo si es Activa):</label>
+                <select id="payMethodSelect" style="margin-top: 5px; font-weight: bold;">
+                    <option value="Efectivo">💵 Efectivo</option>
+                    <option value="Pago Móvil">📱 Pago Móvil</option>
+                    <option value="Biopago">🖩 Biopago</option>
+                    <option value="Tarjeta">💳 Tarjeta (Punto)</option>
+                </select>
+            </div>
+
+            <button class="btn btn-success btn-full" onclick="prepareSale('ACTIVA')">✅ PROCESAR PAGO</button>
+            <button class="btn btn-debt btn-full" onclick="prepareSale('CREDITO')">💳 DAR A CRÉDITO</button>
+            <button class="btn btn-neutral btn-full" onclick="closeModal()">CANCELAR</button>`;
+        document.getElementById('modalOverlay').style.display = 'flex';
+    }
+
+    function prepareSale(status) {
+        let cId = document.getElementById('posClientSelect').value;
+        if(status === 'CREDITO' && cId === "0") return alert("Debe seleccionar un cliente para otorgar crédito.");
+        
+        let total = cart.reduce((a,b)=>a+(b.price*b.qty),0);
+        let clientData = customers.find(c => c.id === cId) || {id: "0", name: "Consumidor Final"};
+        
+        let payMethod = document.getElementById('payMethodSelect').value;
+        if(status === 'CREDITO') payMethod = "Por Cobrar"; 
+        
+        let currentSaleId = invoiceCounter; 
+        
+        let sale = { 
+            id: currentSaleId, 
+            date: new Date().toLocaleString(), 
+            day: new Date().toLocaleDateString(), 
+            customer: clientData, 
+            items: [...cart], 
+            total: total, 
+            paid: status === 'ACTIVA' ? total : 0, 
+            status: status, 
+            method: payMethod, 
+            rate: exchangeRate 
+        };
+        
+        sales.push(sale); 
+        invoiceCounter++; 
+        save();
+        
+        let formattedId = String(currentSaleId).padStart(4, '0');
+
+        document.getElementById('modalBody').innerHTML = `
+            <h3>✅ Registro Exitoso</h3>
+            <p style="font-size: 1.2rem;">Factura N°: <b>${formattedId}</b></p>
+            <button class="btn btn-primary btn-full" onclick="printDoc(${currentSaleId}, 'ticket')">🎫 TICKET TÉRMICO</button>
+            <button class="btn btn-warning btn-full" onclick="printDoc(${currentSaleId}, 'a4')">📑 FACTURA A4</button>
+            <button class="btn btn-danger btn-full" onclick="finishAll()">CERRAR</button>`;
+    }
+
+    function finishAll() { cart = []; updateCartUI(); closeModal(); renderClients(); }
+
+    function renderHistory() {
+        try {
+            let q = document.getElementById('searchHist').value.toLowerCase();
+            let today = new Date().toLocaleDateString();
+            let totalVentasHoy = 0, totalCreditos = 0;
+            
+            sales.forEach(s => {
+                if(s.day === today && s.status === 'ACTIVA') totalVentasHoy += (s.paid || 0);
+                if(s.status === 'CREDITO') totalCreditos += ((s.total || 0) - (s.paid || 0));
+            });
+            
+            document.getElementById('sumDaily').innerText = `$${totalVentasHoy.toFixed(2)}`;
+            document.getElementById('sumDebt').innerText = `$${totalCreditos.toFixed(2)}`;
+            
+            let filtered = sales.filter(s => 
+                s.id.toString().includes(q) || 
+                (s.customer?.name || "Desconocido").toLowerCase().includes(q)
+            );
+            
+            document.getElementById('historyList').innerHTML = filtered.reverse().map(s => {
+                let fId = String(s.id).padStart(4, '0');
+                let badge = s.method ? `<span style="background:var(--bg); padding:2px 6px; border-radius:4px; font-size:0.7rem;">${escapeHTML(s.method)}</span>` : '';
+                
+                return `
+                <div class="card history-card ${s.status ? s.status.toLowerCase() : ''}">
+                    <div style="display:flex; justify-content:space-between;">
+                        <b>#${fId}</b>
+                        ${badge}
+                    </div>
+                    ${escapeHTML(s.customer?.name || "Desconocido")} | $${(s.total || 0).toFixed(2)}<br>
+                    <small>${escapeHTML(s.date || 'Sin fecha')}</small>
+                    <div style="margin-top:10px; display:flex; gap:5px;">
+                        <button class="btn btn-neutral btn-sm" onclick="printDoc(${s.id}, 'ticket')">🎫</button>
+                        <button class="btn btn-neutral btn-sm" onclick="printDoc(${s.id}, 'a4')">📑</button>
+                        ${s.status === 'CREDITO' ? `<button class="btn btn-success btn-sm" onclick="openAbonoModal(${s.id})">💰 Abono</button>` : ''}
+                        <button class="btn btn-danger btn-sm" onclick="voidSale(${s.id})">Anular</button>
+                    </div>
+                </div>`;
+            }).join('');
+                
+        } catch (e) {
+            document.getElementById('historyList').innerHTML = `<div style="color:red; padding:10px; border:1px solid red;">Error de historial.</div>`;
+        }
+    }
+
+    function openAbonoModal(id) {
+        let s = sales.find(x => x.id === id);
+        if(!s) return;
+        let pendiente = (s.total - s.paid).toFixed(2);
+        
+        document.getElementById('modalBody').innerHTML = `
+            <h3>💰 Registrar Abono</h3>
+            <p>Saldo pendiente: <b style="color:var(--danger)">$${pendiente}</b></p>
+            <input type="number" id="inpAbono" step="0.01" value="${pendiente}" style="text-align:center; font-size:1.5rem;">
+            <button class="btn btn-success btn-full" onclick="confirmAbono(${id})">REGISTRAR PAGO</button>
+            <button class="btn btn-neutral btn-full" onclick="closeModal()">CANCELAR</button>`;
+        
+        document.getElementById('modalOverlay').style.display = 'flex';
+        setTimeout(() => { const input = document.getElementById('inpAbono'); if(input) { input.focus(); input.select(); } }, 200);
+    }
+
+    function confirmAbono(id) {
+        let val = parseFloat(document.getElementById('inpAbono').value);
+        let s = sales.find(x => x.id === id);
+        if(isNaN(val) || val <= 0) return showToast("Monto inválido ⚠️");
+        s.paid = Number((s.paid + val).toFixed(2));
+        if(s.paid >= s.total - 0.01) { 
+            s.paid = s.total; 
+            s.status = 'ACTIVA'; 
+            s.method = "Abonos/Efectivo"; 
+            showToast("Crédito pagado por completo ✅"); 
+        } else { 
+            showToast("Abono registrado ✅"); 
+        }
+        save(); renderHistory(); closeModal();
+    }
+
+    function openCierreModal() {
+        let today = new Date().toLocaleDateString();
+        let ventasHoy = sales.filter(s => s.day === today);
+        
+        let cashIn = 0, creditPending = 0;
+        let mEfectivo = 0, mPMovil = 0, mBiopago = 0, mTarjeta = 0, mAbono = 0;
+
+        ventasHoy.forEach(s => {
+            if(s.status === 'ACTIVA') { 
+                cashIn += (s.total || 0); 
+                if(s.method === 'Efectivo') mEfectivo += (s.total || 0);
+                else if(s.method === 'Pago Móvil') mPMovil += (s.total || 0);
+                else if(s.method === 'Biopago') mBiopago += (s.total || 0);
+                else if(s.method === 'Tarjeta') mTarjeta += (s.total || 0);
+                else if(s.method === 'Abonos/Efectivo') mAbono += (s.total || 0);
+                else mEfectivo += (s.total || 0); 
+            }
+            if(s.status === 'CREDITO') { 
+                cashIn += (s.paid || 0); 
+                creditPending += ((s.total || 0) - (s.paid || 0)); 
+                if(s.paid > 0) mAbono += (s.paid || 0);
+            }
+        });
+
+        document.getElementById('modalBody').innerHTML = `
+            <h3>📊 Cierre de Caja del Día</h3>
+            <p>Fecha: <b>${today}</b></p>
+            <div style="text-align:left; background:var(--input-bg); padding:15px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border); font-size: 0.9rem;">
+                <p style="margin:5px 0">Tickets emitidos: <b>${ventasHoy.length}</b></p>
+                <hr style="border-color:var(--border)">
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px;"><span>💵 Efectivo:</span> <b>$${mEfectivo.toFixed(2)}</b></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px;"><span>📱 P. Móvil:</span> <b>$${mPMovil.toFixed(2)}</b></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px;"><span>🖩 Biopago:</span> <b>$${mBiopago.toFixed(2)}</b></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px;"><span>💳 Tarjeta:</span> <b>$${mTarjeta.toFixed(2)}</b></div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px;"><span>💰 Abonos:</span> <b>$${mAbono.toFixed(2)}</b></div>
+                <hr style="border-color:var(--border)">
+                <p style="margin:5px 0">Total Ingresado: <br><b style="color:var(--success); font-size:1.2rem;">$${cashIn.toFixed(2)}</b></p>
+                <p style="margin:5px 0">Créditos por cobrar: <br><b style="color:var(--danger); font-size:1.1rem;">$${creditPending.toFixed(2)}</b></p>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="printCierre()">🖨️ IMPRIMIR CIERRE (TICKET)</button>
+            <button class="btn btn-neutral btn-full" onclick="closeModal()">VOLVER</button>`;
+        document.getElementById('modalOverlay').style.display = 'flex';
+    }
+
+    function printCierre() {
+        let today = new Date().toLocaleDateString();
+        let time = new Date().toLocaleTimeString();
+        let ventasHoy = sales.filter(s => s.day === today);
+        let cashIn = 0, creditPending = 0;
+        let mEfectivo = 0, mPMovil = 0, mBiopago = 0, mTarjeta = 0, mAbono = 0;
+        
+        ventasHoy.forEach(s => {
+            if(s.status === 'ACTIVA') { 
+                cashIn += (s.total || 0); 
+                if(s.method === 'Efectivo') mEfectivo += (s.total || 0);
+                else if(s.method === 'Pago Móvil') mPMovil += (s.total || 0);
+                else if(s.method === 'Biopago') mBiopago += (s.total || 0);
+                else if(s.method === 'Tarjeta') mTarjeta += (s.total || 0);
+                else if(s.method === 'Abonos/Efectivo') mAbono += (s.total || 0);
+                else mEfectivo += (s.total || 0); 
+            }
+            if(s.status === 'CREDITO') { 
+                cashIn += (s.paid || 0); 
+                creditPending += ((s.total || 0) - (s.paid || 0)); 
+                if(s.paid > 0) mAbono += (s.paid || 0);
+            }
+        });
+
+        let win = window.open('', '_blank');
+        // APLICA CONFIGURACIÓN DINÁMICA DE ANCHO Y LETRA
+        let styles = `<style>@page{margin:0;size:auto;} body{margin:0;padding:5px;font-family:'Courier New',Courier,monospace;width:${ticketWidth};} .ticket{max-width:100%;font-size:${ticketFontSize};line-height:1.2;} hr{border-top:1px dashed #000;border-bottom:none;margin:10px 0;} .line{display:flex;justify-content:space-between;margin-bottom:4px;}</style>`;
+
+        let html = `
+            ${styles}
+            <div class="ticket">
+                <center>
+                    <h2 style="margin:5px 0;">${escapeHTML(storeName)}</h2>
+                    <h3>REPORTE DE CIERRE (Z)</h3>
+                    <small>Fecha: ${today}</small><br>
+                    <small>Hora: ${time}</small>
+                </center>
+                <hr>
+                <div class="line"><span>Tickets:</span> <span>${ventasHoy.length}</span></div>
+                <hr>
+                <b>INGRESOS (USD)</b><br>
+                <div class="line"><span>Efectivo:</span> <span>$${mEfectivo.toFixed(2)}</span></div>
+                <div class="line"><span>P. Movil:</span> <span>$${mPMovil.toFixed(2)}</span></div>
+                <div class="line"><span>Biopago:</span> <span>$${mBiopago.toFixed(2)}</span></div>
+                <div class="line"><span>Tarjeta:</span> <span>$${mTarjeta.toFixed(2)}</span></div>
+                <div class="line"><span>Abonos:</span> <span>$${mAbono.toFixed(2)}</span></div>
+                <hr>
+                <div class="line" style="font-weight:bold;"><span>TOTAL USD:</span> <span>$${cashIn.toFixed(2)}</span></div>
+                <div class="line" style="font-weight:bold;"><span>TOTAL VES:</span> <span>Bs. ${(cashIn * exchangeRate).toFixed(2)}</span></div>
+                <hr>
+                <center><br><b>*** FIN DEL REPORTE ***</b><br><br><br></center>
+            </div>`;
+        
+        win.document.write(html); win.document.close();
+        setTimeout(() => { win.print(); win.close(); }, 300);
+    }
+
+    function showView(v, el) {
+        if ((v === 'historyView' || v === 'adminView') && !isAdminUnlocked) { openLoginModal(v, el); return; }
+        document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active'));
+        document.getElementById(v).classList.add('active'); el.classList.add('active');
+        if(v === 'posView') renderPOS(); if(v === 'historyView') renderHistory();
+        if(v === 'adminView') { renderPTable(); renderCTable(); }
+    }
+
+    function renderPTable() {
+        document.getElementById('pTable').innerHTML = products.map(p => `
+            <div class="card" style="padding:8px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="flex:1"><b>${escapeHTML(p.name)}</b><br><small>$${p.price} | Stk: ${p.stock}</small></div>
+                <div style="display:flex; gap:5px;">
+                    <button class="btn btn-warning btn-sm" onclick="openProductModal(${p.id})">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="delP(${p.id})">✖</button>
+                </div>
+            </div>`).join('');
+    }
+
+    function openProductModal(id = null) {
+        let p = id ? products.find(x => x.id === id) : { name: "", price: "", stock: "" };
+        document.getElementById('modalBody').innerHTML = `
+            <h3>${id ? 'Editar' : 'Nuevo'} Producto</h3>
+            <input id="mPN" placeholder="Nombre" value="${escapeHTML(p.name)}">
+            <input id="mPP" type="number" step="0.01" placeholder="Precio $" value="${p.price}">
+            <input id="mPS" type="number" step="0.01" placeholder="Stock" value="${p.stock}">
+            <button class="btn btn-success btn-full" onclick="saveProduct(${id})">GUARDAR</button>
+            <button class="btn btn-neutral btn-full" onclick="closeModal()">CANCELAR</button>`;
+        document.getElementById('modalOverlay').style.display='flex';
+        setTimeout(() => document.getElementById('mPN').focus(), 150);
+    }
+
+    function saveProduct(id) {
+        let name = document.getElementById('mPN').value, price = parseFloat(document.getElementById('mPP').value), stock = parseFloat(document.getElementById('mPS').value);
+        if(!name || isNaN(price)) return showToast("Datos invalidos");
+        if(id) { let p = products.find(x => x.id === id); p.name = name; p.price = price; p.stock = stock; } 
+        else { products.push({id: Date.now(), name, price, stock}); }
+        save(); closeModal(); renderPTable(); renderPOS();
+    }
+
+    function renderCTable() {
+        document.getElementById('cTable').innerHTML = customers.map(c => `
+            <div class="card" style="padding:8px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="flex:1"><b>${escapeHTML(c.name)}</b><br><small>ID: ${escapeHTML(c.id)}</small></div>
+                <div style="display:flex; gap:5px;">
+                    ${c.id !== "0" ? `<button class="btn btn-warning btn-sm" onclick="openCustomerModal('${c.id}')">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="delC('${c.id}')">✖</button>` : ''}
+                </div>
+            </div>`).join('');
+    }
+
+    function openCustomerModal(id = null) {
+        let c = id ? customers.find(x => x.id === id) : { name: "", id: "" };
+        document.getElementById('modalBody').innerHTML = `
+            <h3>${id ? 'Editar' : 'Nuevo'} Cliente</h3>
+            <input id="mCN" placeholder="Nombre completo" value="${escapeHTML(c.name)}">
+            <input id="mCI" placeholder="Cédula/RIF" value="${escapeHTML(c.id)}">
+            <button class="btn btn-success btn-full" onclick="saveCustomer('${id}')">GUARDAR</button>
+            <button class="btn btn-neutral btn-full" onclick="closeModal()">CANCELAR</button>`;
+        document.getElementById('modalOverlay').style.display='flex';
+        setTimeout(() => document.getElementById('mCN').focus(), 150);
+    }
+
+    function saveCustomer(oldId) {
+        let name = document.getElementById('mCN').value, newId = document.getElementById('mCI').value;
+        if(!name || !newId) return showToast("Datos incompletos");
+        if(oldId !== "null" && oldId !== "") {
+            let c = customers.find(x => x.id === oldId);
+            c.name = name; c.id = newId; 
+        } else {
+            if(customers.find(x => x.id === newId)) return showToast("ID ya existe");
+            customers.push({id: newId, name});
+        }
+        save(); closeModal(); renderCTable(); renderClients();
+    }
+
+    function delP(id) { if(confirm("¿Eliminar?")) { products = products.filter(x=>x.id!==id); save(); renderPTable(); renderPOS(); } }
+    function delC(id) { if(id!=="0" && confirm("¿Eliminar?")) { customers = customers.filter(x=>x.id!==id); save(); renderCTable(); renderClients(); } }
+    
+    function voidSale(id) { 
+        if(!confirm("¿Anular?")) return; 
+        let s = sales.find(x=>x.id===id); 
+        s.items.forEach(i => { let p = products.find(x=>x.id===i.id); if(p) p.stock = Number((p.stock + i.qty).toFixed(3)); }); 
+        sales = sales.filter(x=>x.id!==id); 
+        save(); renderHistory(); 
+    }
+    
+    function lockSystem() { isAdminUnlocked = false; document.getElementById('lockBtn').style.display = 'none'; showView('posView', document.getElementById('navPos')); }
+    function toggleTheme() { document.body.classList.toggle('dark-mode'); localStorage.setItem('pos_theme', document.body.classList.contains('dark-mode')?'dark':'light'); }
+    function showToast(m) { let t = document.getElementById("toast"); t.innerText = m; t.className = "show"; setTimeout(()=>t.className="", 2000); }
+    function clearCart() { cart.forEach(i => { let p = products.find(x => x.id === i.id); if(p) p.stock = Number((p.stock + i.qty).toFixed(3)); }); cart = []; updateCartUI(); }
+    function renderClients() { let q = document.getElementById('posSearchClient').value.toLowerCase(); document.getElementById('posClientSelect').innerHTML = customers.filter(c => c.name.toLowerCase().includes(q)).map(c => `<option value="${escapeHTML(c.id)}">${escapeHTML(c.name)}</option>`).join(''); }
+    function updateStoreName() { storeName = document.getElementById('configStoreName').value; document.getElementById('brandName').innerText = "🚀 " + storeName; save(); showToast("Actualizado"); }
+    function changePassword() { let p = document.getElementById('newAdminPass').value; if(p.length >= 4) { adminPass = hashPIN(p); localStorage.setItem('pos_pass', adminPass); document.getElementById('newAdminPass').value = ""; showToast("Clave actualizada"); } else { showToast("Mínimo 4 caracteres"); } }
+
+    function exportBackup() {
+        let backupData = {
+            pos_p: localStorage.getItem('pos_p'),
+            pos_c: localStorage.getItem('pos_c'),
+            pos_s: localStorage.getItem('pos_s'),
+            pos_name: localStorage.getItem('pos_name'),
+            pos_rate: localStorage.getItem('pos_rate'),
+            pos_invoice_counter: localStorage.getItem('pos_invoice_counter'),
+            pos_t_width: localStorage.getItem('pos_t_width'),
+            pos_t_font: localStorage.getItem('pos_t_font'),
+            pos_pass: localStorage.getItem('pos_pass')
+        };
+        
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+        let downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        let dateStr = new Date().toISOString().slice(0,10);
+        downloadAnchor.setAttribute("download", `respaldo_pos_${dateStr}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast("Copia de seguridad exportada ✅");
+    }
+
+    function triggerImport() {
+        document.getElementById('importFileInput').click();
+    }
+
+    function importBackup(e) {
+        let file = e.target.files[0];
+        if(!file) return;
+        
+        let reader = new FileReader();
+        reader.onload = function(evt) {
+            try {
+                let data = JSON.parse(evt.target.result);
+                if (data.pos_p || data.pos_c || data.pos_s) {
+                    if(confirm("⚠️ ¿Estás seguro de importar estos datos? Se sobrescribirá toda la información actual del POS.")) {
+                        if(data.pos_p) localStorage.setItem('pos_p', data.pos_p);
+                        if(data.pos_c) localStorage.setItem('pos_c', data.pos_c);
+                        if(data.pos_s) localStorage.setItem('pos_s', data.pos_s);
+                        if(data.pos_name) localStorage.setItem('pos_name', data.pos_name);
+                        if(data.pos_rate) localStorage.setItem('pos_rate', data.pos_rate);
+                        if(data.pos_invoice_counter) localStorage.setItem('pos_invoice_counter', data.pos_invoice_counter);
+                        if(data.pos_t_width) localStorage.setItem('pos_t_width', data.pos_t_width);
+                        if(data.pos_t_font) localStorage.setItem('pos_t_font', data.pos_t_font);
+                        if(data.pos_pass) localStorage.setItem('pos_pass', data.pos_pass);
+                        
+                        showToast("Datos importados con éxito ✅");
+                        setTimeout(() => { location.reload(); }, 1000);
+                    }
+                } else {
+                    alert("El archivo de respaldo no tiene el formato válido ❌");
+                }
+            } catch(err) {
+                alert("Error al leer el archivo de respaldo ❌");
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    function printDoc(id, fmt) {
+        let s = sales.find(x => x.id === id);
+        if(!s) return;
+        let win = window.open('', '_blank');
+        let r = s.rate || exchangeRate;
+        let clientName = s.customer?.name || "Desconocido";
+        let clientId = s.customer?.id || "N/A";
+        let formattedId = String(s.id).padStart(4, '0'); 
+        let displayMethod = s.method ? `<br><b>Forma de pago:</b> ${escapeHTML(s.method)}` : '';
+        let escapedStoreName = escapeHTML(storeName);
+        let escapedClientName = escapeHTML(clientName);
+        let escapedClientId = escapeHTML(clientId);
+
+        // APLICA CONFIGURACIÓN DINÁMICA DE ANCHO Y LETRA AL TICKET
+        let styles = `<style>@page{margin:0;size:auto;} body{margin:0;padding:5px;font-family:'Courier New',Courier,monospace;width:${fmt === 'ticket' ? ticketWidth : '100%'};} .ticket{max-width:100%;font-size:${ticketFontSize};line-height:1.2;} hr{border-top:1px dashed #000;border-bottom:none;} .total{font-size:14px;font-weight:bold;} table{width:100%;border-collapse:collapse;}</style>`;
+
+        let html = "";
+        if (fmt === 'ticket') {
+            html = `
+                ${styles}
+                <div class="ticket">
+                    <center>
+                        <h2 style="margin:5px 0;">${escapedStoreName}</h2>
+                        <small>Ticket N°: ${formattedId}</small><br>
+                        <small>${s.date}</small>
+                    </center>
+                    <hr>
+                    ${(s.items || []).map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>${i.qty} x ${escapeHTML(i.name)}</span><span>$${(i.price * i.qty).toFixed(2)}</span></div>`).join('')}
+                    <hr>
+                    <div class="total">
+                        <div style="display:flex; justify-content:space-between;"><span>TOTAL USD:</span> <span>$${(s.total || 0).toFixed(2)}</span></div>
+                        <div style="display:flex; justify-content:space-between;"><span>TOTAL VES:</span> <span>Bs. ${((s.total || 0) * r).toFixed(2)}</span></div>
+                    </div>
+                    <hr>
+                    <center>
+                        <small>Condición: ${s.status || 'N/A'}</small>
+                        ${displayMethod}
+                        <br><br><b>¡Gracias!</b>
+                    </center><br><br>
+                </div>`;
+        } else {
+            // FORMATO A4 (Se mantiene estándar para hojas grandes)
+            html = `
+                <div style="font-family:Arial;padding:40px;">
+                    <table width="100%"><tr><td><h1>${escapedStoreName}</h1></td><td align="right">FACTURA N°: <b>${formattedId}</b><br>Fecha: ${s.date}</td></tr></table>
+                    <hr><p><b>Cliente:</b> ${escapedClientName} (ID: ${escapedClientId})</p>
+                    <table width="100%" border="1" style="border-collapse:collapse;" cellpadding="8">
+                        <tr style="background:#eee"><th>Cant.</th><th>Descripción</th><th>Precio Unit.</th><th>Subtotal</th></tr>
+                        ${(s.items || []).map(i=>`<tr><td>${i.qty}</td><td>${escapeHTML(i.name)}</td><td>$${i.price.toFixed(2)}</td><td>$${(i.price*i.qty).toFixed(2)}</td></tr>`).join('')}
+                        <tr><td colspan="3" align="right"><b>TOTAL USD</b></td><td><b>$${(s.total || 0).toFixed(2)}</b></td></tr>
+                        <tr><td colspan="3" align="right"><b>TOTAL VES</b></td><td><b>Bs. ${((s.total || 0)*r).toFixed(2)}</b></td></tr>
+                    </table>
+                    <p>Condición: <b>${s.status || 'N/A'}</b> ${displayMethod}</p>
+                </div>`;
+        }
+
+        win.document.write(html); win.document.close();
+        setTimeout(() => { win.print(); win.close(); }, 300);
+    }
+
+    init();
+</script>
+</body>
+</html>

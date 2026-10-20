@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Elite Pro - Sistema de Punto de Venta</title>
+  
+  <!-- Estilos del Sistema -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+
+  <!-- Barra de Navegación Superior -->
+  <nav>
+    <div class="brand-wrapper">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div class="brand-name" id="brandName">ELITE POS PRO</div>
+      </div>
+      <span class="brand-badge">SISTEMA ACTIVO</span>
+    </div>
+
+    <!-- Insignia de Estado de API REST -->
+    <div class="api-status-badge offline" onclick="ApiClient.detect()" title="Estado de la API REST. Clic para reintentar.">
+      <span class="dot"></span>
+      <span>Detectando API...</span>
+    </div>
+
+    <!-- Indicador de Tasa de Cambio (USD/VES) -->
+    <div class="rate-badge" onclick="openRateModal()" title="Haga clic para actualizar la tasa oficial">
+      <span class="indicator"></span>
+      <span>Tasa: <b>Bs. <span id="navRate">36.50</span></b></span>
+      <span style="font-size: 0.7rem; opacity: 0.7;">✏️</span>
+    </div>
+
+    <!-- Pestañas de Navegación -->
+    <div class="nav-links-group">
+      <div class="nav-link active" id="navPos" onclick="showView('posView', this)">
+        <span>🛒</span>
+        <span>Venta</span>
+      </div>
+      <div class="nav-link" id="navHistory" onclick="showView('historyView', this)">
+        <span>📊</span>
+        <span>Historial</span>
+      </div>
+      <div class="nav-link" id="navAdmin" onclick="showView('adminView', this)">
+        <span>⚙️</span>
+        <span>Admin</span>
+      </div>
+      <a href="index.html" class="nav-link" style="text-decoration: none; border-left: 1px solid var(--border); margin-left: 4px;" title="Ver Ficha Técnica y Caso de Estudio en Portafolio">
+        <span>🏠</span>
+        <span>Portafolio</span>
+      </a>
+      <a href="proyectoproximo.html" class="nav-link" style="text-decoration: none; color: #3b82f6;" title="Ver Página 3: Próximo Proyecto y API Hub">
+        <span>🚀</span>
+        <span>Próximo Proyecto</span>
+      </a>
+    </div>
+
+    <!-- Botón de Bloqueo de Seguridad (visible cuando se desbloquea sesión) -->
+    <div class="action-icon-btn" id="lockBtn" onclick="lockSystem()" style="display:none;" title="Bloquear sesión administrativa">
+      🔒
+    </div>
+
+    <!-- Alternador de Modo Claro / Oscuro -->
+    <div class="action-icon-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema visual">
+      🌙
+    </div>
+  </nav>
+
+  <!-- Notificaciones Toast y Modales -->
+  <div id="toast"></div>
+  <div id="modalOverlay" onclick="if(event.target === this) closeModal()">
+    <div id="modalBody" class="modal-content" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <!-- Contenedor Principal de Vistas -->
+  <main class="main-container">
+
+    <!-- ==========================================
+         VISTA 1: PUNTO DE VENTA (POS)
+         ========================================== -->
+    <section id="posView" class="view active">
+      <div class="pos-layout">
+        
+        <!-- Panel Izquierdo: Catálogo de Productos -->
+        <div class="catalog-panel">
+          <div class="catalog-header">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input 
+                type="text" 
+                id="posSearch" 
+                class="search-input" 
+                placeholder="Buscar por nombre de producto..." 
+                oninput="renderPOS()"
+                autocomplete="off"
+              >
+            </div>
+          </div>
+
+          <!-- Cuadrícula Reactiva de Productos -->
+          <div id="posGrid" class="products-grid"></div>
+        </div>
+
+        <!-- Panel Derecho: Carrito de Compras -->
+        <aside class="cart-panel">
+          <div class="cart-header">
+            <div class="cart-title">
+              <span>🛒 Carrito</span>
+              <span id="cartItemCount" class="cart-count">0</span>
+            </div>
+            <button class="btn btn-neutral btn-sm" onclick="clearCart()" title="Restaurar stock y vaciar carrito">
+              Vaciar
+            </button>
+          </div>
+
+          <!-- Selector de Cliente -->
+          <div class="client-selector-box">
+            <div class="client-selector-label">
+              <span>Cliente Asignado:</span>
+              <span style="cursor: pointer; color: var(--primary);" onclick="openCustomerModal()">+ Registrar</span>
+            </div>
+            <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+              <input 
+                type="text" 
+                id="posSearchClient" 
+                placeholder="Filtrar por nombre o CI..." 
+                oninput="renderClients()" 
+                style="margin: 0; padding: 6px 10px; font-size: 0.8rem;"
+              >
+            </div>
+            <select id="posClientSelect" style="margin: 0; padding: 6px 10px; font-size: 0.82rem;"></select>
+          </div>
+
+          <!-- Lista de Ítems en Carrito -->
+          <div id="posCart" class="cart-items-list"></div>
+
+          <!-- Pie del Carrito con Totales y Acción de Pago -->
+          <div class="cart-footer">
+            <div class="totals-row">
+              <span class="totals-label">Equivalente en Bolívares (VES):</span>
+              <span id="posTotalVES" class="totals-ves">Bs. 0.00</span>
+            </div>
+            <div class="totals-usd-row">
+              <span class="totals-usd-label">Total a Pagar:</span>
+              <span id="posTotalUSD" class="totals-usd-amount">$0.00</span>
+            </div>
+            <button class="btn btn-success btn-full" onclick="openPayModal()">
+              ✓ REGISTRAR VENTA
+            </button>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VISTA 2: HISTORIAL Y REPORTES AUDITORÍA
+         ========================================== -->
+    <section id="historyView" class="view">
+      
+      <!-- Indicadores Clave de Rendimiento (KPI Cards) -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-success">
+          <div class="kpi-title">
+            <span>Ventas Netas Hoy (USD)</span>
+            <span>💵</span>
+          </div>
+          <div id="sumDaily" class="kpi-value">$0.00</div>
+          <div class="kpi-subtext">Total cobrado en caja durante el día</div>
+        </div>
+
+        <div class="kpi-card kpi-debt">
+          <div class="kpi-title">
+            <span>Créditos Pendientes (USD)</span>
+            <span>📑</span>
+          </div>
+          <div id="sumDebt" class="kpi-value">$0.00</div>
+          <div class="kpi-subtext">Cuentas por cobrar acumuladas</div>
+        </div>
+
+        <div class="kpi-card kpi-primary">
+          <div class="kpi-title">
+            <span>Tickets Procesados</span>
+            <span>🧾</span>
+          </div>
+          <div id="countTickets" class="kpi-value">0</div>
+          <div class="kpi-subtext">Transacciones registradas hoy</div>
+        </div>
+      </div>
+
+      <!-- Barra de Acciones del Historial -->
+      <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="openCierreModal()" style="padding: 10px 18px;">
+          📋 Generar Cierre de Caja del Día (Reporte Z)
+        </button>
+        <div style="flex: 1; min-width: 250px;">
+          <input 
+            type="text" 
+            id="searchHist" 
+            placeholder="🔍 Buscar por Nº Ticket, nombre de cliente o CI..." 
+            oninput="renderHistory()" 
+            style="margin: 0;"
+          >
+        </div>
+      </div>
+
+      <!-- Listado de Transacciones -->
+      <div id="historyList"></div>
+    </section>
+
+    <!-- ==========================================
+         VISTA 3: ADMINISTRACIÓN Y CONFIGURACIÓN
+         ========================================== -->
+    <section id="adminView" class="view">
+      <div class="admin-grid">
+        
+        <!-- Columna Izquierda: Gestión de Inventario y Clientes -->
+        <div>
+          <!-- Inventario de Productos -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="margin: 0;">📦 Catálogo de Productos</h4>
+              <button class="btn btn-primary btn-sm" onclick="openProductModal()">
+                + Nuevo Producto
+              </button>
+            </div>
+            <div id="pTable" class="data-table-list"></div>
+          </div>
+
+          <!-- Directorio de Clientes -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="margin: 0;">👥 Directorio de Clientes</h4>
+              <button class="btn btn-warning btn-sm" onclick="openCustomerModal()">
+                + Nuevo Cliente
+              </button>
+            </div>
+            <div id="cTable" class="data-table-list"></div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Configuración y Seguridad -->
+        <div>
+          <!-- Configuración del Negocio -->
+          <div class="card">
+            <h4 style="margin-bottom: 12px;">🏢 Parámetros del Negocio</h4>
+            <label>Nombre Comercial / Encabezado:</label>
+            <input type="text" id="configStoreName" placeholder="Ej: Supermercado El Éxito">
+            <button class="btn btn-primary btn-full" onclick="updateStoreName()" style="margin-bottom: 16px;">
+              Guardar Nombre
+            </button>
+
+            <h4 style="margin-bottom: 8px;">🖨️ Configuración de Impresión Térmica</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label>Ancho del Papel:</label>
+                <input type="text" id="configTicketWidth" placeholder="58mm o 80mm">
+              </div>
+              <div>
+                <label>Tamaño de Fuente:</label>
+                <input type="text" id="configTicketFontSize" placeholder="12px o 14px">
+              </div>
+            </div>
+            <button class="btn btn-warning btn-full" onclick="updatePrintSettings()">
+              Guardar Ajustes de Impresión
+            </button>
+          </div>
+
+          <!-- Seguridad y Respaldo -->
+          <div class="card">
+            <h4 style="margin-bottom: 8px;">🔐 Seguridad Administrativa</h4>
+            <label>Nuevo PIN de Acceso (Mínimo 4 caracteres):</label>
+            <input type="password" id="newAdminPass" placeholder="Ingresa nuevo PIN">
+            <button class="btn btn-danger btn-full" onclick="changePassword()" style="margin-bottom: 16px;">
+              Actualizar PIN de Seguridad (SHA-256)
+            </button>
+
+            <h4 style="margin-bottom: 8px;">💾 Respaldo y Migración de Datos</h4>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">
+              Exporta la base de datos completa a un archivo JSON para tener respaldo externo o migrar a otro equipo.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <button class="btn btn-primary btn-full" style="margin: 0;" onclick="exportBackup()">
+                ⬇️ Exportar Backup
+              </button>
+              <button class="btn btn-warning btn-full" style="margin: 0;" onclick="triggerImport()">
+                ⬆️ Importar Backup
+              </button>
+            </div>
+            <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importBackup(event)">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Módulos de Lógica JavaScript -->
+  <script src="js/api-client.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/print.js"></script>
+  <script src="js/pos.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

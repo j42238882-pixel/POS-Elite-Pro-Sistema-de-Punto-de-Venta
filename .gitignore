@@ -1,0 +1,27 @@
+# Dependencias
+node_modules/
+
+# Build / Instaladores generados
+dist/
+out/
+
+# Logs de npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables de entorno
+.env
+.env.local
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Datos locales de la aplicación
+POS-Elite-Data/
+*.json.bak
+dist-server/
+data/api_db.json
+

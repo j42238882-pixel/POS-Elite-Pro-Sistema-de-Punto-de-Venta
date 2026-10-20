@@ -1,0 +1,34 @@
+name: 🧪 CI - Verificación de Calidad y TypeScript
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 'feature/**'
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  validate:
+    name: 🔬 Typecheck & Build Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Instalar dependencias
+        run: npm install
+
+      - name: 🔍 Chequeo estricto TypeScript
+        run: npx tsc --noEmit
+
+      - name: 🏗️ Compilar Backend y Frontend
+        run: npm run build

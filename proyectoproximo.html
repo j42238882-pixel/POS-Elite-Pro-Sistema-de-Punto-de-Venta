@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Próximo Proyecto | POS Elite Cloud & API Gateway</title>
+  <meta name="description" content="Página 3 del proyecto: Especificación y Roadmap de POS Elite Cloud, Consola de API REST y Arquitectura Distribuida.">
+  
+  <!-- Estilos del Portafolio y del Sistema POS -->
+  <link rel="stylesheet" href="css/portfolio.css">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .api-tester-card {
+      background: var(--p-surface);
+      border: 1px solid var(--p-border);
+      border-radius: var(--p-radius-lg);
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: var(--p-shadow-sm);
+    }
+    .api-endpoint-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--p-border);
+      background: var(--p-surface-2);
+      color: var(--p-text);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .api-endpoint-btn:hover {
+      border-color: #10b981;
+      transform: translateY(-2px);
+    }
+    .api-endpoint-btn.active {
+      background: #10b981;
+      color: #fff;
+      border-color: #10b981;
+    }
+    .method-badge {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+    .method-get { background: #3b82f6; color: white; }
+    .method-post { background: #10b981; color: white; }
+    .json-output {
+      background: #0f172a;
+      color: #38bdf8;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.82rem;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      max-height: 380px;
+      border: 1px solid #1e293b;
+      margin-top: 16px;
+      white-space: pre-wrap;
+    }
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .roadmap-card {
+      background: var(--p-surface);
+      border: 1px solid var(--p-border);
+      border-radius: var(--p-radius-md);
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    .roadmap-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--p-shadow-md);
+      border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body class="portfolio-body">
+
+  <!-- ==========================================
+       BARRA DE NAVEGACIÓN UNIFICADA (PÁGINA 3)
+       ========================================== -->
+  <header>
+    <nav class="p-navbar">
+      <a href="index.html" class="p-nav-brand">
+        <div class="p-logo-badge">⚡</div>
+        <div>
+          <div class="p-brand-text">POS ELITE PRO</div>
+          <div class="p-brand-sub">Urbina • Rodríguez • Meléndez</div>
+        </div>
+      </a>
+
+      <!-- Menú de las 3 Páginas Principales -->
+      <ul class="p-nav-menu">
+        <li><a href="index.html" class="p-nav-link">🏠 1. Portafolio</a></li>
+        <li><a href="pos.html" class="p-nav-link">🛒 2. Punto de Venta POS</a></li>
+        <li><a href="proyectoproximo.html" class="p-nav-link active" style="color: var(--p-primary); font-weight: 700;">🚀 3. Proyecto Próximo</a></li>
+      </ul>
+
+      <div class="p-nav-actions">
+        <!-- Insignia de Estado de API REST en Vivo -->
+        <div class="api-status-badge offline" onclick="ApiClient.detect()" title="Click para reintentar conexión con la API">
+          <span class="dot"></span>
+          <span>Detectando API...</span>
+        </div>
+
+        <!-- Tasa de Cambio Oficial -->
+        <div class="p-rate-pill" onclick="location.href='pos.html'" title="Tasa en el sistema">
+          <span class="p-rate-indicator"></span>
+          <span>Tasa: <b>Bs. 36.50</b></span>
+        </div>
+
+        <!-- Alternador de Tema Claro / Oscuro -->
+        <div class="p-theme-toggle" id="portfolioThemeBtn" onclick="togglePortfolioTheme()" title="Cambiar tema visual">
+          🌙
+        </div>
+
+        <!-- Salto directo al POS -->
+        <a href="pos.html" class="p-btn p-btn-primary">
+          <span>🛒</span>
+          <span>Ir al POS en Vivo</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==========================================
+       CONTENIDO DE LA PÁGINA 3
+       ========================================== -->
+  <main class="p-container" style="max-width: 1100px; margin: 40px auto; padding: 0 20px;">
+
+    <!-- HERO SECTION -->
+    <section class="p-hero" style="text-align: center; margin-bottom: 48px;">
+      <div class="p-pill-badge" style="margin: 0 auto 16px auto;">
+        <span>🚀</span>
+        <span>Página 3: Roadmap de Ingeniería de Software // Próximo Proyecto</span>
+      </div>
+
+      <h1 class="p-hero-title">
+        POS Elite Cloud & API Gateway<br>
+        <span class="text-gradient">Evolución Multi-Sucursal y Nube</span>
+      </h1>
+
+      <div class="p-team-byline">
+        <span>👨‍💻 Desarrollado por:</span>
+        <b>Juan Urbina</b> (Backend & API) &bull; 
+        <b>Daniel Rodríguez</b> (Frontend POS) &bull; 
+        <b>Maykelis Meléndez</b> (DevOps & CI/CD)
+      </div>
+
+      <p class="p-hero-desc" style="max-width: 800px; margin: 16px auto 24px auto;">
+        El proyecto actual <strong>POS Elite Pro</strong> resuelve de manera exitosa la operación comercial <em>Offline-First</em> con soporte multimoneda (USD/VES). 
+        En esta tercera página se presenta la especificación y demostración en vivo del <strong>Próximo Proyecto: Arquitectura Cloud Distribuida</strong>, 
+        respaldada por TypeScript, GitHub Actions CI/CD y despliegue serverless en Netlify.
+      </p>
+
+      <div class="p-hero-cta" style="justify-content: center;">
+        <a href="pos.html" class="p-btn p-btn-primary p-btn-lg">
+          <span>🛒</span>
+          <span>Abrir Página 2: Simulador POS</span>
+        </a>
+        <a href="index.html" class="p-btn p-btn-secondary p-btn-lg">
+          <span>📖</span>
+          <span>Regresar a Página 1: Portafolio</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- CONSOLA INTERACTIVA DE PRUEBAS DE LA API REST -->
+    <section id="api-console" style="margin-bottom: 56px;">
+      <div class="p-section-header">
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">
+          📡 Consola Interactiva de API REST en Vivo
+        </h2>
+        <p style="color: var(--p-text-dim); font-size: 0.95rem;">
+          Prueba las peticiones HTTP directamente contra el servidor backend en TypeScript (Localhost:3001 o Netlify Functions Cloud).
+        </p>
+      </div>
+
+      <div class="api-tester-card">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+          <button class="api-endpoint-btn" onclick="testEndpoint('/status')">
+            <span class="method-badge method-get">GET</span>
+            <span>/api/status</span>
+          </button>
+          <button class="api-endpoint-btn" onclick="testEndpoint('/products')">
+            <span class="method-badge method-get">GET</span>
+            <span>/api/products</span>
+          </button>
+          <button class="api-endpoint-btn" onclick="testEndpoint('/team')">
+            <span class="method-badge method-get">GET</span>
+            <span>/api/team</span>
+          </button>
+          <button class="api-endpoint-btn" onclick="testEndpoint('/customers')">
+            <span class="method-badge method-get">GET</span>
+            <span>/api/customers</span>
+          </button>
+          <button class="api-endpoint-btn" onclick="testEndpoint('/sales')">
+            <span class="method-badge method-get">GET</span>
+            <span>/api/sales</span>
+          </button>
+          <button class="api-endpoint-btn" onclick="testEndpoint('/config')">
+            <span class="method-badge method-get">GET</span>
+            <span>/api/config</span>
+          </button>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 0.85rem; color: var(--p-text-dim);">
+            Endpoint activo: <code id="activeEndpointLabel" style="color: #10b981; font-weight: bold;">/api/status</code>
+          </div>
+          <div id="apiResponseTime" style="font-size: 0.8rem; color: var(--p-text-dim);">
+            Tiempo: -- ms
+          </div>
+        </div>
+
+        <pre id="jsonViewer" class="json-output">// Presione uno de los botones superiores para ejecutar una petición a la API...</pre>
+      </div>
+    </section>
+
+    <!-- ROADMAP Y PILARES TÉCNICOS DEL PROYECTO PRÓXIMO -->
+    <section style="margin-bottom: 56px;">
+      <div class="p-section-header">
+        <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">
+          🗺️ Pilares Técnicos del Próximo Proyecto
+        </h2>
+        <p style="color: var(--p-text-dim); font-size: 0.95rem;">
+          Estrategias arquitectónicas implementadas para escalar de comercio local a franquicia multi-tienda.
+        </p>
+      </div>
+
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <div style="font-size: 1.8rem; margin-bottom: 8px;">🟦</div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">1. Backend TypeScript & REST API</h3>
+          <p style="font-size: 0.85rem; color: var(--p-text-dim); line-height: 1.5;">
+            Arquitectura fuertemente tipada con interfaces para productos, ventas multimoneda, clientes y cierres de caja.
+            Control de errores estricto y separación de capas de negocio.
+          </p>
+        </div>
+
+        <div class="roadmap-card">
+          <div style="font-size: 1.8rem; margin-bottom: 8px;">🐙</div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">2. GitHub Actions CI/CD</h3>
+          <p style="font-size: 0.85rem; color: var(--p-text-dim); line-height: 1.5;">
+            Pipelines automatizados que compilan TypeScript, verifican sintaxis estricta y ejecutan pruebas en cada Pull Request
+            y commit a la rama <code>main</code>.
+          </p>
+        </div>
+
+        <div class="roadmap-card">
+          <div style="font-size: 1.8rem; margin-bottom: 8px;">🌐</div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">3. Despliegue Cloud en Netlify</h3>
+          <p style="font-size: 0.85rem; color: var(--p-text-dim); line-height: 1.5;">
+            Frontend estático de alta velocidad con funciones serverless (Netlify Functions) que proveen la API REST
+            en la nube sin costo de servidores dedicados.
+          </p>
+        </div>
+
+        <div class="roadmap-card">
+          <div style="font-size: 1.8rem; margin-bottom: 8px;">🌿</div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">4. Estrategia Git por Participante</h3>
+          <p style="font-size: 0.85rem; color: var(--p-text-dim); line-height: 1.5;">
+            Ramas dedicadas por integrante (Juan, Daniel y Maykelis), flujo de trabajo colaborativo basado en ramas de funcionalidad
+            y convenciones de Conventional Commits.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVEGACIÓN DIRECTA ENTRE LAS 3 PÁGINAS -->
+    <section style="background: var(--p-surface-2); border: 1px solid var(--p-border); border-radius: var(--p-radius-lg); padding: 32px; text-align: center; margin-bottom: 48px;">
+      <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">
+        🔗 Navegación Rápida entre las 3 Páginas del Proyecto
+      </h3>
+      <p style="color: var(--p-text-dim); font-size: 0.9rem; margin-bottom: 20px;">
+        Acceda en un solo clic a cualquiera de las 3 páginas evaluadas:
+      </p>
+      <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="index.html" class="p-btn p-btn-secondary">
+          <span>🏠</span>
+          <span>Página 1: Portafolio de Ingeniería</span>
+        </a>
+        <a href="pos.html" class="p-btn p-btn-secondary">
+          <span>🛒</span>
+          <span>Página 2: Sistema Punto de Venta POS</span>
+        </a>
+        <a href="proyectoproximo.html" class="p-btn p-btn-primary">
+          <span>🚀</span>
+          <span>Página 3: Próximo Proyecto (Actual)</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="p-footer">
+    <p style="margin-bottom: 6px;">
+      <b>POS Elite Pro &mdash; Próximo Proyecto & API Gateway</b>
+    </p>
+    <p>
+      Desarrollado en equipo por <strong>Juan Urbina</strong>, <strong>Daniel Rodríguez</strong> y <strong>Maykelis Meléndez</strong>. Licencia ISC.
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api-client.js"></script>
+  <script src="js/portfolio.js"></script>
+  <script>
+    async function testEndpoint(endpoint) {
+      const viewer = document.getElementById('jsonViewer');
+      const label = document.getElementById('activeEndpointLabel');
+      const timeLabel = document.getElementById('apiResponseTime');
+      label.innerText = `/api${endpoint}`;
+      viewer.innerText = `Cargando datos desde ${ApiClient.getBaseUrl() || ''}/api${endpoint}...`;
+
+      const start = performance.now();
+      try {
+        let data = null;
+        if (endpoint === '/status') data = await ApiClient.getStatus();
+        else if (endpoint === '/products') data = await ApiClient.getProducts();
+        else if (endpoint === '/team') data = await ApiClient.getTeam();
+        else if (endpoint === '/customers') data = await ApiClient.getCustomers();
+        else if (endpoint === '/sales') data = await ApiClient.getSales();
+        else if (endpoint === '/config') data = await ApiClient.getConfig();
+
+        const elapsed = Math.round(performance.now() - start);
+        timeLabel.innerText = `Tiempo: ${elapsed} ms`;
+
+        if (data) {
+          viewer.innerText = JSON.stringify(data, null, 2);
+        } else {
+          viewer.innerText = `// No se pudo conectar con el servidor API.\n// Asegúrese de iniciar el servidor con: npm run server\n// O revisar la función de Netlify en la nube.`;
+        }
+      } catch (err) {
+        viewer.innerText = `Error ejecutando petición: ${err.message}`;
+      }
+    }
+
+    // Ejecutar petición inicial de status
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        testEndpoint('/status');
+      }, 500);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Elite Pro | Portafolio de Ingeniería de Software</title>
+  <meta name="description" content="Portafolio de desarrollo de software: POS Elite Pro. Proyecto creado por Juan Urbina, Daniel Rodríguez y Maykelis Meléndez.">
+  
+  <!-- Estilos del Portafolio y del Sistema POS -->
+  <link rel="stylesheet" href="css/portfolio.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body class="portfolio-body">
+
+  <!-- ==========================================
+       BARRA DE NAVEGACIÓN PRINCIPAL
+       ========================================== -->
+  <header>
+    <nav class="p-navbar">
+      <a href="#inicio" class="p-nav-brand">
+        <div class="p-logo-badge">⚡</div>
+        <div>
+          <div class="p-brand-text">POS ELITE PRO</div>
+          <div class="p-brand-sub">Urbina • Rodríguez • Meléndez</div>
+        </div>
+      </a>
+
+      <ul class="p-nav-menu">
+        <li><a href="#inicio" class="p-nav-link">Inicio</a></li>
+        <li><a href="#equipo" class="p-nav-link">Equipo</a></li>
+        <li><a href="#galeria" class="p-nav-link">Galería</a></li>
+        <li><a href="#simulador" class="p-nav-link">Simulador</a></li>
+        <li><a href="pos.html" class="p-nav-link" style="color: #10b981; font-weight: 600;">🛒 Punto de Venta</a></li>
+        <li><a href="proyectoproximo.html" class="p-nav-link" style="color: #3b82f6; font-weight: 600;">🚀 Proyecto Próximo</a></li>
+      </ul>
+
+      <div class="p-nav-actions">
+        <!-- Insignia de Estado de API REST -->
+        <div class="api-status-badge offline" onclick="ApiClient.detect()" title="Estado de la API REST. Clic para reintentar.">
+          <span class="dot"></span>
+          <span>Detectando API...</span>
+        </div>
+
+        <!-- Tasa de Cambio Rápida -->
+        <div class="p-rate-pill" onclick="openRateModal()" title="Haga clic para ajustar la tasa oficial en tiempo real">
+          <span class="p-rate-indicator"></span>
+          <span>Tasa: <b>Bs. <span id="portfolioRateVal">36.50</span></b></span>
+          <span style="font-size: 0.7rem; opacity: 0.7;">✏️</span>
+        </div>
+
+        <!-- Alternador de Tema Claro / Oscuro -->
+        <div class="p-theme-toggle" id="portfolioThemeBtn" onclick="togglePortfolioTheme()" title="Cambiar tema visual">
+          🌙
+        </div>
+
+        <!-- Botón de Salto al Simulador -->
+        <a href="#simulador" class="p-btn p-btn-primary">
+          <span>🎮</span>
+          <span>Probar Simulador</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==========================================
+       CONTENIDO DEL PORTAFOLIO
+       ========================================== -->
+  <main id="inicio">
+
+    <!-- HERO SECTION -->
+    <section class="p-hero">
+      <div class="p-pill-badge">
+        <span>⚡</span>
+        <span>Portafolio de Desarrollo de Software // Proyecto Destacado</span>
+      </div>
+
+      <h1 class="p-hero-title">
+        POS Elite Pro: Sistema de Punto de Venta<br>
+        <span class="text-gradient">Dual-Moneda & Offline-First</span>
+      </h1>
+
+      <div class="p-team-byline">
+        <span>👨‍💻 Desarrollado por:</span>
+        <b>Juan Urbina</b> &bull; <b>Daniel Rodríguez</b> &bull; <b>Maykelis Meléndez</b>
+      </div>
+
+      <p class="p-hero-desc">
+        Un sistema de gestión comercial de alto desempeño diseñado para resolver la fricción del 
+        comercio minorista multimoneda (<strong>Dólares USD y Bolívares VES</strong>) en entornos con conectividad inestable. 
+        Opera 100% sin internet, incorpora impresión térmica nativa y arquitectura modular en <strong>Electron y JavaScript</strong>.
+      </p>
+
+      <div class="p-hero-cta">
+        <a href="#simulador" class="p-btn p-btn-primary p-btn-lg">
+          <span>🎮</span>
+          <span>Probar Simulador POS en Vivo</span>
+        </a>
+        <a href="#galeria" class="p-btn p-btn-secondary p-btn-lg">
+          <span>🛍️</span>
+          <span>Ver Galería de Productos</span>
+        </a>
+        <a href="https://github.com/DanyR1411/POS-Elite" target="_blank" rel="noopener noreferrer" class="p-btn p-btn-secondary p-btn-lg">
+          <span>🐙</span>
+          <span>Código en GitHub</span>
+        </a>
+      </div>
+
+      <!-- Tarjetas de Métricas de Impacto -->
+      <div class="p-stats-grid">
+        <div class="p-stat-card">
+          <div class="p-stat-number text-gradient">100%</div>
+          <div class="p-stat-label">Offline-First (Cero caídas por internet)</div>
+        </div>
+        <div class="p-stat-card">
+          <div class="p-stat-number text-gradient">USD / VES</div>
+          <div class="p-stat-label">Cálculo cambiario reactivo continuo</div>
+        </div>
+        <div class="p-stat-card">
+          <div class="p-stat-number text-gradient">SHA-256</div>
+          <div class="p-stat-label">Criptografía para seguridad administrativa</div>
+        </div>
+        <div class="p-stat-card">
+          <div class="p-stat-number text-gradient">&lt; 0.5s</div>
+          <div class="p-stat-label">Tiempo de arranque ultraliviano</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN: EQUIPO DE DESARROLLO
+         ========================================== -->
+    <section id="equipo" class="p-section">
+      <div class="p-section-header">
+        <div class="p-section-subtitle">Equipo de Ingeniería</div>
+        <h2 class="p-section-title">Los Creadores del Proyecto</h2>
+        <p class="p-section-desc">
+          Colaboración multidisciplinaria en arquitectura de software, experiencia de usuario y lógica contable.
+        </p>
+      </div>
+
+      <div class="p-team-grid">
+        
+        <!-- Miembro 1: Juan Urbina -->
+        <div class="p-team-card">
+          <div class="p-member-top">
+            <div class="p-member-avatar">JU</div>
+            <div>
+              <h3 class="p-member-name">Juan Urbina</h3>
+              <div class="p-member-role">Lead Frontend & UI/UX Designer</div>
+            </div>
+          </div>
+          <p class="p-member-bio">
+            Responsable del diseño del sistema visual, maquetación responsiva en CSS moderno, 
+            modo claro/oscuro e interacciones del cajero para máxima velocidad operativa en el punto de venta.
+          </p>
+          <div class="p-member-badges">
+            <span class="p-member-badge">HTML5 / CSS3</span>
+            <span class="p-member-badge">UI/UX Design</span>
+            <span class="p-member-badge">Responsive Grid</span>
+            <span class="p-member-badge">Micro-animaciones</span>
+          </div>
+        </div>
+
+        <!-- Miembro 2: Daniel Rodríguez -->
+        <div class="p-team-card">
+          <div class="p-member-top">
+            <div class="p-member-avatar">DR</div>
+            <div>
+              <h3 class="p-member-name">Daniel Rodríguez</h3>
+              <div class="p-member-role">Full-Stack Developer & Desktop Architect</div>
+            </div>
+          </div>
+          <p class="p-member-bio">
+            Encargado de la integración con el ecosistema de Electron.js, persistencia en sistema de archivos local (`fs`), 
+            empaquetado NSIS para Windows y controladores para impresoras térmicas de tickets.
+          </p>
+          <div class="p-member-badges">
+            <span class="p-member-badge">Electron.js</span>
+            <span class="p-member-badge">Node.js Core</span>
+            <span class="p-member-badge">Hardware Printing</span>
+            <span class="p-member-badge">JavaScript ES6+</span>
+          </div>
+        </div>
+
+        <!-- Miembro 3: Maykelis Meléndez -->
+        <div class="p-team-card">
+          <div class="p-member-top">
+            <div class="p-member-avatar">MM</div>
+            <div>
+              <h3 class="p-member-name">Maykelis Meléndez</h3>
+              <div class="p-member-role">Software QA & Business Logic Engineer</div>
+            </div>
+          </div>
+          <p class="p-member-bio">
+            Diseñó las reglas contables del negocio: el Reporte Z de Cierre de Caja, el seguimiento de cartera 
+            de créditos por cobrar, la seguridad criptográfica por PIN (SHA-256) y el aseguramiento de calidad (QA).
+          </p>
+          <div class="p-member-badges">
+            <span class="p-member-badge">Lógica Contable</span>
+            <span class="p-member-badge">Criptografía SHA-256</span>
+            <span class="p-member-badge">Reporte Z</span>
+            <span class="p-member-badge">QA & Testing</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN: GALERÍA DE PRODUCTOS EN VENTA
+         ========================================== -->
+    <section id="galeria" class="p-section">
+      <div class="p-section-header">
+        <div class="p-section-subtitle">Catálogo Comercial</div>
+        <h2 class="p-section-title">Galería de Productos Disponibles</h2>
+        <p class="p-section-desc">
+          Explora los artículos comercializados. Puedes hacer clic en <strong>"Añadir al Simulador"</strong> 
+          para enviar productos directamente al carrito del simulador POS interactivo.
+        </p>
+      </div>
+
+      <!-- Filtros por Categoría -->
+      <div class="p-gallery-filter">
+        <div class="p-gallery-pill active" onclick="filterGallery('todos', this)">🌟 Todos los Productos</div>
+        <div class="p-gallery-pill" onclick="filterGallery('viveres', this)">🌾 Víveres y Alimentos</div>
+        <div class="p-gallery-pill" onclick="filterGallery('lacteos', this)">🧀 Lácteos & Charcutería</div>
+        <div class="p-gallery-pill" onclick="filterGallery('bebidas', this)">🥤 Bebidas y Refrescos</div>
+        <div class="p-gallery-pill" onclick="filterGallery('snacks', this)">🍫 Snacks & Despensa</div>
+      </div>
+
+      <!-- Cuadrícula Dinámica de la Galería -->
+      <div id="galleryGrid" class="p-gallery-grid"></div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN: SIMULADOR POS INTEGRADO EN VIVO
+         ========================================== -->
+    <section id="simulador" class="p-section">
+      <div class="p-section-header">
+        <div class="p-section-subtitle">Demostración en Tiempo Real</div>
+        <h2 class="p-section-title">Simulador POS Integrado en la Web</h2>
+        <p class="p-section-desc">
+          Prueba el software tal como lo usaría un cajero en el establecimiento: añade artículos, ajusta cantidades, 
+          calcula montos en bolívares, procesa pagos y genera recibos de caja.
+        </p>
+      </div>
+
+      <!-- Marco de la Estación de Trabajo POS -->
+      <div class="p-simulator-wrapper">
+        <div class="p-simulator-header">
+          <div class="p-sim-title-group">
+            <div class="p-sim-dots">
+              <span class="p-sim-dot" style="background:#ef4444;"></span>
+              <span class="p-sim-dot" style="background:#f59e0b;"></span>
+              <span class="p-sim-dot" style="background:#10b981;"></span>
+            </div>
+            <span style="font-weight: 700; font-size: 0.9rem;">TERMINAL-01 // ESTACIÓN DE VENTA</span>
+            <span class="brand-badge">EN LÍNEA</span>
+          </div>
+
+          <!-- Pestañas Internas del Simulador -->
+          <div class="p-sim-tabs">
+            <button class="p-sim-tab-btn active" onclick="switchSimTab('posView', this)">
+              🛒 Terminal POS
+            </button>
+            <button class="p-sim-tab-btn" onclick="switchSimTab('historyView', this)">
+              📊 Historial & Cierre Z
+            </button>
+            <button class="p-sim-tab-btn" onclick="switchSimTab('adminView', this)">
+              ⚙️ Inventario & Admin
+            </button>
+          </div>
+        </div>
+
+        <div class="p-simulator-body">
+
+          <!-- VISTA 1: POS / VENTA -->
+          <div id="posView" class="view active">
+            <div class="sim-pos-layout">
+              
+              <!-- Catálogo del Simulador -->
+              <div class="catalog-panel">
+                <div class="catalog-header">
+                  <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input 
+                      type="text" 
+                      id="posSearch" 
+                      class="search-input" 
+                      placeholder="Filtrar por nombre de producto..." 
+                      oninput="renderPOS()"
+                      autocomplete="off"
+                    >
+                  </div>
+                </div>
+                <div id="posGrid" class="products-grid"></div>
+              </div>
+
+              <!-- Carrito de Compras del Simulador -->
+              <aside class="cart-panel">
+                <div class="cart-header">
+                  <div class="cart-title">
+                    <span>🛒 Carrito</span>
+                    <span id="cartItemCount" class="cart-count">0</span>
+                  </div>
+                  <button class="btn btn-neutral btn-sm" onclick="clearCart()" title="Vaciar carrito y reponer stock">
+                    Vaciar
+                  </button>
+                </div>
+
+                <div class="client-selector-box">
+                  <div class="client-selector-label">
+                    <span>Cliente de la Venta:</span>
+                    <span style="cursor: pointer; color: var(--primary);" onclick="openCustomerModal()">+ Registrar</span>
+                  </div>
+                  <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+                    <input 
+                      type="text" 
+                      id="posSearchClient" 
+                      placeholder="Buscar por nombre o CI..." 
+                      oninput="renderClients()" 
+                      style="margin: 0; padding: 6px 10px; font-size: 0.8rem;"
+                    >
+                  </div>
+                  <select id="posClientSelect" style="margin: 0; padding: 6px 10px; font-size: 0.82rem;"></select>
+                </div>
+
+                <div id="posCart" class="cart-items-list"></div>
+
+                <div class="cart-footer">
+                  <div class="totals-row">
+                    <span class="totals-label">Equivalente en Bolívares (VES):</span>
+                    <span id="posTotalVES" class="totals-ves">Bs. 0.00</span>
+                  </div>
+                  <div class="totals-usd-row">
+                    <span class="totals-usd-label">Total en Divisa:</span>
+                    <span id="posTotalUSD" class="totals-usd-amount">$0.00</span>
+                  </div>
+                  <button class="btn btn-success btn-full" onclick="openPayModal()">
+                    ✓ REGISTRAR VENTA
+                  </button>
+                </div>
+              </aside>
+
+            </div>
+          </div>
+
+          <!-- VISTA 2: HISTORIAL Y REPORTES AUDITORÍA -->
+          <div id="historyView" class="view">
+            <div class="kpi-grid">
+              <div class="kpi-card kpi-success">
+                <div class="kpi-title">
+                  <span>Ventas Netas Hoy (USD)</span>
+                  <span>💵</span>
+                </div>
+                <div id="sumDaily" class="kpi-value">$0.00</div>
+                <div class="kpi-subtext">Total cobrado en caja durante el día</div>
+              </div>
+
+              <div class="kpi-card kpi-debt">
+                <div class="kpi-title">
+                  <span>Créditos Pendientes (USD)</span>
+                  <span>📑</span>
+                </div>
+                <div id="sumDebt" class="kpi-value">$0.00</div>
+                <div class="kpi-subtext">Cuentas por cobrar acumuladas</div>
+              </div>
+
+              <div class="kpi-card kpi-primary">
+                <div class="kpi-title">
+                  <span>Tickets Procesados</span>
+                  <span>🧾</span>
+                </div>
+                <div id="countTickets" class="kpi-value">0</div>
+                <div class="kpi-subtext">Transacciones registradas hoy</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="openCierreModal()" style="padding: 10px 18px;">
+                📋 Generar Cierre de Caja del Día (Reporte Z)
+              </button>
+              <div style="flex: 1; min-width: 250px;">
+                <input 
+                  type="text" 
+                  id="searchHist" 
+                  placeholder="🔍 Buscar por Nº Ticket, nombre de cliente o CI..." 
+                  oninput="renderHistory()" 
+                  style="margin: 0;"
+                >
+              </div>
+            </div>
+
+            <div id="historyList"></div>
+          </div>
+
+          <!-- VISTA 3: ADMINISTRACIÓN Y CONFIGURACIÓN -->
+          <div id="adminView" class="view">
+            <div class="admin-grid">
+              <div>
+                <div class="card">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h4 style="margin: 0;">📦 Catálogo de Productos</h4>
+                    <button class="btn btn-primary btn-sm" onclick="openProductModal()">
+                      + Nuevo Producto
+                    </button>
+                  </div>
+                  <div id="pTable" class="data-table-list"></div>
+                </div>
+
+                <div class="card">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h4 style="margin: 0;">👥 Directorio de Clientes</h4>
+                    <button class="btn btn-warning btn-sm" onclick="openCustomerModal()">
+                      + Nuevo Cliente
+                    </button>
+                  </div>
+                  <div id="cTable" class="data-table-list"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card">
+                  <h4 style="margin-bottom: 12px;">🏢 Parámetros del Negocio</h4>
+                  <label>Nombre Comercial / Encabezado:</label>
+                  <input type="text" id="configStoreName" placeholder="Nombre del Negocio">
+                  <button class="btn btn-primary btn-full" onclick="updateStoreName()" style="margin-bottom: 16px;">
+                    Guardar Nombre
+                  </button>
+
+                  <h4 style="margin-bottom: 8px;">🖨️ Ajustes de Impresión Térmica</h4>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                      <label>Ancho (58mm / 80mm):</label>
+                      <input type="text" id="configTicketWidth" placeholder="58mm">
+                    </div>
+                    <div>
+                      <label>Tamaño Letra (12px / 14px):</label>
+                      <input type="text" id="configTicketFontSize" placeholder="12px">
+                    </div>
+                  </div>
+                  <button class="btn btn-warning btn-full" onclick="updatePrintSettings()">
+                    Guardar Ajustes
+                  </button>
+                </div>
+
+                <div class="card">
+                  <h4 style="margin-bottom: 8px;">🔐 Seguridad Administrativa</h4>
+                  <label>Nuevo PIN (Mínimo 4 caracteres):</label>
+                  <input type="password" id="newAdminPass" placeholder="Ingresa nuevo PIN">
+                  <button class="btn btn-danger btn-full" onclick="changePassword()" style="margin-bottom: 16px;">
+                    Actualizar PIN con SHA-256
+                  </button>
+
+                  <h4 style="margin-bottom: 8px;">💾 Respaldo de Base de Datos</h4>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn btn-primary btn-full" style="margin: 0;" onclick="exportBackup()">
+                      ⬇️ Exportar JSON
+                    </button>
+                    <button class="btn btn-warning btn-full" style="margin: 0;" onclick="triggerImport()">
+                      ⬆️ Importar JSON
+                    </button>
+                  </div>
+                  <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importBackup(event)">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN: CASO DE ESTUDIO & ARQUITECTURA
+         ========================================== -->
+    <section id="arquitectura" class="p-section">
+      <div class="p-section-header">
+        <div class="p-section-subtitle">Ingeniería & Solución de Problemas</div>
+        <h2 class="p-section-title">El Desafío Comercial vs. Nuestra Arquitectura</h2>
+        <p class="p-section-desc">
+          Cómo resolvimos los cuellos de botella de infraestructura y volatilidad monetaria en comercios reales.
+        </p>
+      </div>
+
+      <div class="p-compare-grid" style="margin-bottom: 40px;">
+        <div class="p-compare-card problem">
+          <h3 class="p-compare-title" style="color: #ef4444;">
+            <span>⚠️</span>
+            <span>El Problema en el Comercio Minorista</span>
+          </h3>
+          <ul class="p-compare-list">
+            <li class="p-compare-item">
+              <span>❌</span>
+              <div><b>Dualidad cambiaria y volatilidad:</b> Coexistencia simultánea de efectivo en dólares y pagos electrónicos en bolívares (Pago Móvil, Biopago) a tasas fluctuantes.</div>
+            </li>
+            <li class="p-compare-item">
+              <span>❌</span>
+              <div><b>Cortes de internet y electricidad:</b> Las cajas registradoras dependientes de la nube dejan de cobrar cuando se interrumpe el servicio.</div>
+            </li>
+            <li class="p-compare-item">
+              <span>❌</span>
+              <div><b>ERPs pesados e invasivos:</b> Sistemas costosos con altos requisitos de hardware que ralentizan computadoras de mostrador.</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="p-compare-card solution">
+          <h3 class="p-compare-title" style="color: var(--p-emerald);">
+            <span>✓</span>
+            <span>La Solución POS Elite Pro</span>
+          </h3>
+          <ul class="p-compare-list">
+            <li class="p-compare-item">
+              <span>✅</span>
+              <div><b>Motor de Tasa Dinámica Reactiva:</b> Actualización de la tasa oficial en un clic con recalculo inmediato de todo el inventario y carrito.</div>
+            </li>
+            <li class="p-compare-item">
+              <span>✅</span>
+              <div><b>Filosofía 100% Offline-First:</b> Almacenamiento local híbrido (Node.js FS / LocalStorage) inmune a caídas de telecomunicaciones.</div>
+            </li>
+            <li class="p-compare-item">
+              <span>✅</span>
+              <div><b>Rendimiento y Ligereza:</b> JavaScript Vanilla modular sin frameworks pesados, garantizando 60fps y respuesta en milisegundos.</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pilares Arquitectónicos -->
+      <div class="p-arch-grid">
+        <div class="p-arch-card">
+          <div class="p-arch-icon">🖥️</div>
+          <h3 class="p-arch-title">Capa de Presentación UI</h3>
+          <p class="p-arch-desc">
+            Construida con HTML5 semántico y CSS3 con variables nativas, modo claro/oscuro y diseño responsivo para pantallas táctiles y escritorios.
+          </p>
+        </div>
+
+        <div class="p-arch-card">
+          <div class="p-arch-icon">⚙️</div>
+          <h3 class="p-arch-title">Lógica de Negocio Desacoplada</h3>
+          <p class="p-arch-desc">
+            Módulos JavaScript ES6+ independientes para inventario, pesaje/fracciones de unidades, cuentas por cobrar y cálculo financiero.
+          </p>
+        </div>
+
+        <div class="p-arch-card">
+          <div class="p-arch-icon">💾</div>
+          <h3 class="p-arch-title">Persistencia Adaptativa</h3>
+          <p class="p-arch-desc">
+            En entorno Electron escribe en disco local mediante <code>fs</code> de Node.js; en entorno web realiza fallback transparente a <code>localStorage</code>.
+          </p>
+        </div>
+
+        <div class="p-arch-card">
+          <div class="p-arch-icon">🔐</div>
+          <h3 class="p-arch-title">Criptografía SHA-256</h3>
+          <p class="p-arch-desc">
+            Seguridad administrativa robusta con hashing criptográfico unidireccional. El PIN nunca se almacena en texto plano en la base de datos.
+          </p>
+        </div>
+      </div>
+
+      <!-- Stack de Tecnologías -->
+      <div class="p-tech-cluster">
+        <div class="p-tech-pill">⚡ <b>JavaScript Vanilla (ES6+)</b></div>
+        <div class="p-tech-pill">🖥️ <b>Electron Framework v29</b></div>
+        <div class="p-tech-pill">🎨 <b>CSS3 Grid & Variables</b></div>
+        <div class="p-tech-pill">📄 <b>HTML5 Semántico</b></div>
+        <div class="p-tech-pill">🟢 <b>Node.js (fs, crypto, path)</b></div>
+        <div class="p-tech-pill">📦 <b>electron-builder (NSIS)</b></div>
+        <div class="p-tech-pill">🖨️ <b>ESC/POS Thermal Engine</b></div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECCIÓN: CONTACTO & PRESENTACIÓN
+         ========================================== -->
+    <section id="contacto" class="p-section">
+      <div class="p-author-card">
+        <div class="p-author-avatar">👥</div>
+        <div class="p-author-info">
+          <h3>Proyecto de Desarrollo de Software</h3>
+          <div class="p-author-role">Juan Urbina &bull; Daniel Rodríguez &bull; Maykelis Meléndez</div>
+          <p class="p-author-bio">
+            Este software fue concebido, desarrollado y probado como proyecto integral de ingeniería. 
+            El código fuente se encuentra versionado con arquitectura modular, preparado tanto para despliegue web 
+            como para distribución como instalador ejecutable (.exe) para sistemas Windows.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="https://github.com/DanyR1411/POS-Elite" target="_blank" rel="noopener noreferrer" class="p-btn p-btn-primary">
+              <span>🐙</span>
+              <span>Visitar Repositorio en GitHub</span>
+            </a>
+            <a href="#simulador" class="p-btn p-btn-secondary">
+              <span>🎮</span>
+              <span>Subir al Simulador POS</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODALES Y NOTIFICACIONES TOAST
+       ========================================== -->
+  <div id="toast"></div>
+  <div id="modalOverlay" onclick="if(event.target === this) closeModal()">
+    <div id="modalBody" class="modal-content" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="p-footer">
+    <p style="margin-bottom: 6px;">
+      <b>POS Elite Pro</b> &mdash; Portafolio de Ingeniería de Software.
+    </p>
+    <p>
+      Desarrollado en equipo por <strong>Juan Urbina</strong>, <strong>Daniel Rodríguez</strong> y <strong>Maykelis Meléndez</strong>. Licencia ISC.
+    </p>
+  </footer>
+
+  <!-- Scripts Modulares del Sistema -->
+  <script src="js/api-client.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/print.js"></script>
+  <script src="js/pos.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/portfolio.js"></script>
+</body>
+</html>
