@@ -6,30 +6,50 @@
 /**
  * Catálogo detallado para la Galería de Productos del Portafolio
  */
+// Mapa de imágenes reales por producto (generadas con IA para fines demostrativos)
+const PRODUCT_IMAGES = {
+  101: { img: "assets/products_viveres.jpg",  emoji: "🌽" },
+  102: { img: "assets/products_viveres.jpg",  emoji: "🌾" },
+  103: { img: "assets/products_viveres.jpg",  emoji: "🍝" },
+  104: { img: "assets/products_viveres.jpg",  emoji: "🌻" },
+  105: { img: "assets/products_viveres.jpg",  emoji: "☕" },
+  106: { img: "assets/products_viveres.jpg",  emoji: "🍚" },
+  107: { img: "assets/products_lacteos.jpg",  emoji: "🧀" },
+  108: { img: "assets/products_lacteos.jpg",  emoji: "🥛" },
+  110: { img: "assets/products_lacteos.jpg",  emoji: "🧈" },
+  111: { img: "assets/products_lacteos.jpg",  emoji: "🥓" },
+  109: { img: "assets/products_bebidas.jpg",  emoji: "🥤" },
+  112: { img: "assets/products_bebidas.jpg",  emoji: "🍺" },
+  113: { img: "assets/products_bebidas.jpg",  emoji: "🍊" },
+  114: { img: "assets/products_bebidas.jpg",  emoji: "💧" },
+  115: { img: "assets/products_snacks.jpg",   emoji: "🍪" },
+  116: { img: "assets/products_snacks.jpg",   emoji: "🍫" }
+};
+
 const GALLERY_PRODUCTS = [
   // Víveres
-  { id: 101, name: "Harina PAN Blanca 1kg", category: "viveres", emoji: "🌽", price: 1.25, stock: 45, desc: "Harina de maíz blanco precocida, líder en el mercado venezolano." },
-  { id: 102, name: "Arroz Blanco Premium 1kg", category: "viveres", emoji: "🌾", price: 1.10, stock: 30, desc: "Grano entero seleccionado de alta cocción." },
-  { id: 103, name: "Pasta Larga Spaghetti 500g", category: "viveres", emoji: "🍝", price: 0.95, stock: 25, desc: "Sémola de trigo duro importada de primera calidad." },
-  { id: 104, name: "Aceite Vegetal Comestible 1L", category: "viveres", emoji: "🌻", price: 2.40, stock: 18, desc: "Aceite 100% puro de girasol refinado." },
-  { id: 105, name: "Café Molido Gourmet 250g", category: "viveres", emoji: "☕", price: 2.80, stock: 14, desc: "Tostado y molido artesanal de los Andes venezolanos." },
-  { id: 106, name: "Azúcar Refinada 1kg", category: "viveres", emoji: "🍚", price: 1.30, stock: 22, desc: "Azúcar blanca refinada de alta pureza." },
+  { id: 101, name: "Harina PAN Blanca 1kg",       category: "viveres", price: 1.25, stock: 45,  desc: "Harina de maíz blanco precocida, líder en el mercado venezolano." },
+  { id: 102, name: "Arroz Blanco Premium 1kg",     category: "viveres", price: 1.10, stock: 30,  desc: "Grano entero seleccionado de alta cocción." },
+  { id: 103, name: "Pasta Larga Spaghetti 500g",   category: "viveres", price: 0.95, stock: 25,  desc: "Sémola de trigo duro importada de primera calidad." },
+  { id: 104, name: "Aceite Vegetal Comestible 1L", category: "viveres", price: 2.40, stock: 18,  desc: "Aceite 100% puro de girasol refinado." },
+  { id: 105, name: "Café Molido Gourmet 250g",     category: "viveres", price: 2.80, stock: 14,  desc: "Tostado y molido artesanal de los Andes venezolanos." },
+  { id: 106, name: "Azúcar Refinada 1kg",          category: "viveres", price: 1.30, stock: 22,  desc: "Azúcar blanca refinada de alta pureza." },
 
   // Lácteos & Charcutería
-  { id: 107, name: "Queso Blanco Llanero (kg)", category: "lacteos", emoji: "🧀", price: 4.80, stock: 4.5, desc: "Queso semiduro tradicional venezolano, ideal para rallar." },
-  { id: 108, name: "Leche Pasteurizada Completa 1L", category: "lacteos", emoji: "🥛", price: 1.95, stock: 15, desc: "Envasada con vitaminas A y D fortificadas." },
-  { id: 110, name: "Mantequilla con Sal 250g", category: "lacteos", emoji: "🧈", price: 1.75, stock: 16, desc: "Crema de leche pasteurizada con sal marina." },
-  { id: 111, name: "Jamón de Pierna Cocido (kg)", category: "lacteos", emoji: "🥓", price: 6.50, stock: 8.0, desc: "Charcutería selecta baja en sodio." },
+  { id: 107, name: "Queso Blanco Llanero (kg)",       category: "lacteos", price: 4.80, stock: 4.5, desc: "Queso semiduro tradicional venezolano, ideal para rallar." },
+  { id: 108, name: "Leche Pasteurizada Completa 1L",  category: "lacteos", price: 1.95, stock: 15,  desc: "Envasada con vitaminas A y D fortificadas." },
+  { id: 110, name: "Mantequilla con Sal 250g",        category: "lacteos", price: 1.75, stock: 16,  desc: "Crema de leche pasteurizada con sal marina." },
+  { id: 111, name: "Jamón de Pierna Cocido (kg)",     category: "lacteos", price: 6.50, stock: 8.0, desc: "Charcutería selecta baja en sodio." },
 
   // Bebidas
-  { id: 109, name: "Refresco Cola 2 Litros", category: "bebidas", emoji: "🥤", price: 2.00, stock: 3.0, desc: "Bebida gaseosa sabor cola original." },
-  { id: 112, name: "Malta Polar Botella 250ml", category: "bebidas", emoji: "🍺", price: 0.90, stock: 48, desc: "Bebida nutritiva de cebada malteada." },
-  { id: 113, name: "Jugo Natural de Naranja 1L", category: "bebidas", emoji: "🍊", price: 1.60, stock: 12, desc: "100% fruta pasteurizada sin azúcar añadida." },
-  { id: 114, name: "Agua Mineral Embotellada 5L", category: "bebidas", emoji: "💧", price: 1.50, stock: 20, desc: "Agua de manantial purificada y ozonizada." },
+  { id: 109, name: "Refresco Cola 2 Litros",         category: "bebidas", price: 2.00, stock: 3.0, desc: "Bebida gaseosa sabor cola original." },
+  { id: 112, name: "Malta Artesanal Botella 250ml",   category: "bebidas", price: 0.90, stock: 48,  desc: "Bebida nutritiva de cebada malteada." },
+  { id: 113, name: "Jugo Natural de Naranja 1L",     category: "bebidas", price: 1.60, stock: 12,  desc: "100% fruta pasteurizada sin azúcar añadida." },
+  { id: 114, name: "Agua Mineral Embotellada 5L",    category: "bebidas", price: 1.50, stock: 20,  desc: "Agua de manantial purificada y ozonizada." },
 
   // Snacks & Despensa
-  { id: 115, name: "Galletas de Soda (Pack Familiar)", category: "snacks", emoji: "🍪", price: 1.15, stock: 24, desc: "Crujientes con sal, perfectas para desayunos." },
-  { id: 116, name: "Chocolate Criollo con Leche 70g", category: "snacks", emoji: "🍫", price: 1.40, stock: 35, desc: "Elaborado con fino cacao venezolano de exportación." }
+  { id: 115, name: "Galletas de Soda (Pack Familiar)",  category: "snacks", price: 1.15, stock: 24, desc: "Crujientes con sal, perfectas para desayunos." },
+  { id: 116, name: "Chocolate Criollo con Leche 70g",   category: "snacks", price: 1.40, stock: 35, desc: "Elaborado con fino cacao venezolano de exportación." }
 ];
 
 let currentGalleryCategory = "todos";
@@ -55,12 +75,23 @@ function renderProductGallery() {
       snacks: "🍫 Snacks & Despensa"
     }[p.category] || "General";
 
+    const productMedia = PRODUCT_IMAGES[p.id] || { img: null, emoji: '📦' };
+
     return `
       <div class="p-gallery-card">
-        <div class="p-gallery-img-box">
-          ${p.emoji}
+        <div class="p-gallery-img-box" style="padding: 0; overflow: hidden; background: #f8fafc;">
+          <img
+            src="${productMedia.img}"
+            alt="${escapeHTML(p.name)}"
+            loading="lazy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            style="width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.35s ease;"
+            onmouseover="this.style.transform='scale(1.07)'"
+            onmouseout="this.style.transform='scale(1)'"
+          />
+          <div style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:3rem;">${productMedia.emoji}</div>
           <span class="p-gallery-stock-badge ${isLow ? 'low' : ''}">
-            ${isLow ? `Bajo Stock: ${p.stock}` : `Stock: ${p.stock}`}
+            ${isLow ? `⚠️ Stock: ${p.stock}` : `✅ Stock: ${p.stock}`}
           </span>
         </div>
         <div class="p-gallery-category">${categoryName}</div>
