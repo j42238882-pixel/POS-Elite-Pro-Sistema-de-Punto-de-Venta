@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POS Elite Pro | Portafolio de Ingeniería de Software</title>
-  <meta name="description" content="Portafolio de desarrollo de software: POS Elite Pro. Proyecto creado por Juan Urbina, Daniel Rodríguez y Maykelis Meléndez.">
-  
+  <meta name="description"
+    content="Portafolio de desarrollo de software: POS Elite Pro. Proyecto creado por Juan Urbina, Daniel Rodríguez y Maykelis Meléndez.">
+
   <!-- Estilos del Portafolio y del Sistema POS -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/portfolio.css">
   <link rel="stylesheet" href="css/print.css" media="print">
 </head>
+
 <body class="portfolio-body">
 
   <!-- ==========================================
@@ -27,23 +30,26 @@
       </a>
 
       <ul class="p-nav-menu">
-        <li><a href="#inicio" class="p-nav-link">Inicio</a></li>
+        <li><a href="#inicio" class="p-nav-link">Coca</a></li>
         <li><a href="#equipo" class="p-nav-link">Equipo</a></li>
         <li><a href="#galeria" class="p-nav-link">Galería</a></li>
         <li><a href="#simulador" class="p-nav-link">Simulador</a></li>
         <li><a href="pos.html" class="p-nav-link" style="color: #10b981; font-weight: 600;">🛒 Punto de Venta</a></li>
-        <li><a href="proyectoproximo.html" class="p-nav-link" style="color: #3b82f6; font-weight: 600;">🚀 Proyecto Próximo</a></li>
+        <li><a href="proyectoproximo.html" class="p-nav-link" style="color: #3b82f6; font-weight: 600;">🚀 Proyecto
+            Próximo</a></li>
       </ul>
 
       <div class="p-nav-actions">
         <!-- Insignia de Estado de API REST -->
-        <div class="api-status-badge offline" onclick="ApiClient.detect()" title="Estado de la API REST. Clic para reintentar.">
+        <div class="api-status-badge offline" onclick="ApiClient.detect()"
+          title="Estado de la API REST. Clic para reintentar.">
           <span class="dot"></span>
           <span>Detectando API...</span>
         </div>
 
         <!-- Tasa de Cambio Rápida -->
-        <div class="p-rate-pill" onclick="openRateModal()" title="Haga clic para ajustar la tasa oficial en tiempo real">
+        <div class="p-rate-pill" onclick="openRateModal()"
+          title="Haga clic para ajustar la tasa oficial en tiempo real">
           <span class="p-rate-indicator"></span>
           <span>Tasa: <b>Bs. <span id="portfolioRateVal">36.50</span></b></span>
           <span style="font-size: 0.7rem; opacity: 0.7;">✏️</span>
@@ -86,9 +92,11 @@
       </div>
 
       <p class="p-hero-desc">
-        Un sistema de gestión comercial de alto desempeño diseñado para resolver la fricción del 
-        comercio minorista multimoneda (<strong>Dólares USD y Bolívares VES</strong>) en entornos con conectividad inestable. 
-        Opera 100% sin internet, incorpora impresión térmica nativa y arquitectura modular en <strong>Electron y JavaScript</strong>.
+        Un sistema de gestión comercial de alto desempeño diseñado para resolver la fricción del
+        comercio minorista multimoneda (<strong>Dólares USD y Bolívares VES</strong>) en entornos con conectividad
+        inestable.
+        Opera 100% sin internet, incorpora impresión térmica nativa y arquitectura modular en <strong>Electron y
+          JavaScript</strong>.
       </p>
 
       <div class="p-hero-cta">
@@ -100,7 +108,8 @@
           <span>🛍️</span>
           <span>Ver Galería de Productos</span>
         </a>
-        <a href="https://github.com/DanyR1411/POS-Elite" target="_blank" rel="noopener noreferrer" class="p-btn p-btn-secondary p-btn-lg">
+        <a href="https://github.com/DanyR1411/POS-Elite" target="_blank" rel="noopener noreferrer"
+          class="p-btn p-btn-secondary p-btn-lg">
           <span>🐙</span>
           <span>Código en GitHub</span>
         </a>
@@ -140,7 +149,7 @@
       </div>
 
       <div class="p-team-grid">
-        
+
         <!-- Miembro 1: Juan Urbina -->
         <div class="p-team-card">
           <div class="p-member-top">
@@ -151,7 +160,7 @@
             </div>
           </div>
           <p class="p-member-bio">
-            Responsable del diseño del sistema visual, maquetación responsiva en CSS moderno, 
+            Responsable del diseño del sistema visual, maquetación responsiva en CSS moderno,
             modo claro/oscuro e interacciones del cajero para máxima velocidad operativa en el punto de venta.
           </p>
           <div class="p-member-badges">
@@ -172,7 +181,8 @@
             </div>
           </div>
           <p class="p-member-bio">
-            Encargado de la integración con el ecosistema de Electron.js, persistencia en sistema de archivos local (`fs`), 
+            Encargado de la integración con el ecosistema de Electron.js, persistencia en sistema de archivos local
+            (`fs`),
             empaquetado NSIS para Windows y controladores para impresoras térmicas de tickets.
           </p>
           <div class="p-member-badges">
@@ -193,7 +203,7 @@
             </div>
           </div>
           <p class="p-member-bio">
-            Diseñó las reglas contables del negocio: el Reporte Z de Cierre de Caja, el seguimiento de cartera 
+            Diseñó las reglas contables del negocio: el Reporte Z de Cierre de Caja, el seguimiento de cartera
             de créditos por cobrar, la seguridad criptográfica por PIN (SHA-256) y el aseguramiento de calidad (QA).
           </p>
           <div class="p-member-badges">
@@ -215,7 +225,7 @@
         <div class="p-section-subtitle">Catálogo Comercial</div>
         <h2 class="p-section-title">Galería de Productos Disponibles</h2>
         <p class="p-section-desc">
-          Explora los artículos comercializados. Puedes hacer clic en <strong>"Añadir al Simulador"</strong> 
+          Explora los artículos comercializados. Puedes hacer clic en <strong>"Añadir al Simulador"</strong>
           para enviar productos directamente al carrito del simulador POS interactivo.
         </p>
       </div>
@@ -241,7 +251,7 @@
         <div class="p-section-subtitle">Demostración en Tiempo Real</div>
         <h2 class="p-section-title">Simulador POS Integrado en la Web</h2>
         <p class="p-section-desc">
-          Prueba el software tal como lo usaría un cajero en el establecimiento: añade artículos, ajusta cantidades, 
+          Prueba el software tal como lo usaría un cajero en el establecimiento: añade artículos, ajusta cantidades,
           calcula montos en bolívares, procesa pagos y genera recibos de caja.
         </p>
       </div>
@@ -278,20 +288,14 @@
           <!-- VISTA 1: POS / VENTA -->
           <div id="posView" class="view active">
             <div class="sim-pos-layout">
-              
+
               <!-- Catálogo del Simulador -->
               <div class="catalog-panel">
                 <div class="catalog-header">
                   <div class="search-input-wrapper">
                     <span class="search-icon">🔍</span>
-                    <input 
-                      type="text" 
-                      id="posSearch" 
-                      class="search-input" 
-                      placeholder="Filtrar por nombre de producto..." 
-                      oninput="renderPOS()"
-                      autocomplete="off"
-                    >
+                    <input type="text" id="posSearch" class="search-input"
+                      placeholder="Filtrar por nombre de producto..." oninput="renderPOS()" autocomplete="off">
                   </div>
                 </div>
                 <div id="posGrid" class="products-grid"></div>
@@ -312,16 +316,12 @@
                 <div class="client-selector-box">
                   <div class="client-selector-label">
                     <span>Cliente de la Venta:</span>
-                    <span style="cursor: pointer; color: var(--primary);" onclick="openCustomerModal()">+ Registrar</span>
+                    <span style="cursor: pointer; color: var(--primary);" onclick="openCustomerModal()">+
+                      Registrar</span>
                   </div>
                   <div style="display: flex; gap: 6px; margin-bottom: 6px;">
-                    <input 
-                      type="text" 
-                      id="posSearchClient" 
-                      placeholder="Buscar por nombre o CI..." 
-                      oninput="renderClients()" 
-                      style="margin: 0; padding: 6px 10px; font-size: 0.8rem;"
-                    >
+                    <input type="text" id="posSearchClient" placeholder="Buscar por nombre o CI..."
+                      oninput="renderClients()" style="margin: 0; padding: 6px 10px; font-size: 0.8rem;">
                   </div>
                   <select id="posClientSelect" style="margin: 0; padding: 6px 10px; font-size: 0.82rem;"></select>
                 </div>
@@ -382,13 +382,8 @@
                 📋 Generar Cierre de Caja del Día (Reporte Z)
               </button>
               <div style="flex: 1; min-width: 250px;">
-                <input 
-                  type="text" 
-                  id="searchHist" 
-                  placeholder="🔍 Buscar por Nº Ticket, nombre de cliente o CI..." 
-                  oninput="renderHistory()" 
-                  style="margin: 0;"
-                >
+                <input type="text" id="searchHist" placeholder="🔍 Buscar por Nº Ticket, nombre de cliente o CI..."
+                  oninput="renderHistory()" style="margin: 0;">
               </div>
             </div>
 
@@ -462,7 +457,8 @@
                       ⬆️ Importar JSON
                     </button>
                   </div>
-                  <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importBackup(event)">
+                  <input type="file" id="importFileInput" accept=".json" style="display:none;"
+                    onchange="importBackup(event)">
                 </div>
               </div>
             </div>
@@ -493,15 +489,18 @@
           <ul class="p-compare-list">
             <li class="p-compare-item">
               <span>❌</span>
-              <div><b>Dualidad cambiaria y volatilidad:</b> Coexistencia simultánea de efectivo en dólares y pagos electrónicos en bolívares (Pago Móvil, Biopago) a tasas fluctuantes.</div>
+              <div><b>Dualidad cambiaria y volatilidad:</b> Coexistencia simultánea de efectivo en dólares y pagos
+                electrónicos en bolívares (Pago Móvil, Biopago) a tasas fluctuantes.</div>
             </li>
             <li class="p-compare-item">
               <span>❌</span>
-              <div><b>Cortes de internet y electricidad:</b> Las cajas registradoras dependientes de la nube dejan de cobrar cuando se interrumpe el servicio.</div>
+              <div><b>Cortes de internet y electricidad:</b> Las cajas registradoras dependientes de la nube dejan de
+                cobrar cuando se interrumpe el servicio.</div>
             </li>
             <li class="p-compare-item">
               <span>❌</span>
-              <div><b>ERPs pesados e invasivos:</b> Sistemas costosos con altos requisitos de hardware que ralentizan computadoras de mostrador.</div>
+              <div><b>ERPs pesados e invasivos:</b> Sistemas costosos con altos requisitos de hardware que ralentizan
+                computadoras de mostrador.</div>
             </li>
           </ul>
         </div>
@@ -514,15 +513,18 @@
           <ul class="p-compare-list">
             <li class="p-compare-item">
               <span>✅</span>
-              <div><b>Motor de Tasa Dinámica Reactiva:</b> Actualización de la tasa oficial en un clic con recalculo inmediato de todo el inventario y carrito.</div>
+              <div><b>Motor de Tasa Dinámica Reactiva:</b> Actualización de la tasa oficial en un clic con recalculo
+                inmediato de todo el inventario y carrito.</div>
             </li>
             <li class="p-compare-item">
               <span>✅</span>
-              <div><b>Filosofía 100% Offline-First:</b> Almacenamiento local híbrido (Node.js FS / LocalStorage) inmune a caídas de telecomunicaciones.</div>
+              <div><b>Filosofía 100% Offline-First:</b> Almacenamiento local híbrido (Node.js FS / LocalStorage) inmune
+                a caídas de telecomunicaciones.</div>
             </li>
             <li class="p-compare-item">
               <span>✅</span>
-              <div><b>Rendimiento y Ligereza:</b> JavaScript Vanilla modular sin frameworks pesados, garantizando 60fps y respuesta en milisegundos.</div>
+              <div><b>Rendimiento y Ligereza:</b> JavaScript Vanilla modular sin frameworks pesados, garantizando 60fps
+                y respuesta en milisegundos.</div>
             </li>
           </ul>
         </div>
@@ -534,7 +536,8 @@
           <div class="p-arch-icon">🖥️</div>
           <h3 class="p-arch-title">Capa de Presentación UI</h3>
           <p class="p-arch-desc">
-            Construida con HTML5 semántico y CSS3 con variables nativas, modo claro/oscuro y diseño responsivo para pantallas táctiles y escritorios.
+            Construida con HTML5 semántico y CSS3 con variables nativas, modo claro/oscuro y diseño responsivo para
+            pantallas táctiles y escritorios.
           </p>
         </div>
 
@@ -542,7 +545,8 @@
           <div class="p-arch-icon">⚙️</div>
           <h3 class="p-arch-title">Lógica de Negocio Desacoplada</h3>
           <p class="p-arch-desc">
-            Módulos JavaScript ES6+ independientes para inventario, pesaje/fracciones de unidades, cuentas por cobrar y cálculo financiero.
+            Módulos JavaScript ES6+ independientes para inventario, pesaje/fracciones de unidades, cuentas por cobrar y
+            cálculo financiero.
           </p>
         </div>
 
@@ -550,7 +554,8 @@
           <div class="p-arch-icon">💾</div>
           <h3 class="p-arch-title">Persistencia Adaptativa</h3>
           <p class="p-arch-desc">
-            En entorno Electron escribe en disco local mediante <code>fs</code> de Node.js; en entorno web realiza fallback transparente a <code>localStorage</code>.
+            En entorno Electron escribe en disco local mediante <code>fs</code> de Node.js; en entorno web realiza
+            fallback transparente a <code>localStorage</code>.
           </p>
         </div>
 
@@ -558,7 +563,8 @@
           <div class="p-arch-icon">🔐</div>
           <h3 class="p-arch-title">Criptografía SHA-256</h3>
           <p class="p-arch-desc">
-            Seguridad administrativa robusta con hashing criptográfico unidireccional. El PIN nunca se almacena en texto plano en la base de datos.
+            Seguridad administrativa robusta con hashing criptográfico unidireccional. El PIN nunca se almacena en texto
+            plano en la base de datos.
           </p>
         </div>
       </div>
@@ -585,12 +591,13 @@
           <h3>Proyecto de Desarrollo de Software</h3>
           <div class="p-author-role">Juan Urbina &bull; Daniel Rodríguez &bull; Maykelis Meléndez</div>
           <p class="p-author-bio">
-            Este software fue concebido, desarrollado y probado como proyecto integral de ingeniería. 
-            El código fuente se encuentra versionado con arquitectura modular, preparado tanto para despliegue web 
+            Este software fue concebido, desarrollado y probado como proyecto integral de ingeniería.
+            El código fuente se encuentra versionado con arquitectura modular, preparado tanto para despliegue web
             como para distribución como instalador ejecutable (.exe) para sistemas Windows.
           </p>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <a href="https://github.com/DanyR1411/POS-Elite" target="_blank" rel="noopener noreferrer" class="p-btn p-btn-primary">
+            <a href="https://github.com/DanyR1411/POS-Elite" target="_blank" rel="noopener noreferrer"
+              class="p-btn p-btn-primary">
               <span>🐙</span>
               <span>Visitar Repositorio en GitHub</span>
             </a>
@@ -621,7 +628,8 @@
       <b>POS Elite Pro</b> &mdash; Portafolio de Ingeniería de Software.
     </p>
     <p>
-      Desarrollado en equipo por <strong>Juan Urbina</strong>, <strong>Daniel Rodríguez</strong> y <strong>Maykelis Meléndez</strong>. Licencia ISC.
+      Desarrollado en equipo por <strong>Juan Urbina</strong>, <strong>Daniel Rodríguez</strong> y <strong>Maykelis
+        Meléndez</strong>. Licencia ISC.
     </p>
   </footer>
 
@@ -634,4 +642,5 @@
   <script src="js/admin.js"></script>
   <script src="js/portfolio.js"></script>
 </body>
+
 </html>
