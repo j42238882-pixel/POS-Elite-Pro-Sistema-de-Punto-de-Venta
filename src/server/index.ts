@@ -11,21 +11,30 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Servir frontend estático (index.html, pos.html, proyectoproximo.html, assets, css, js)
+app.use(express.static(path.join(__dirname, '../../')));
+
 // Archivo de persistencia de la API
 const DATA_FILE = path.join(__dirname, '../../data/api_db.json');
 
 // Catálogo semilla inicial
 const DEFAULT_PRODUCTS: Product[] = [
-  { id: 101, name: "Harina PAN Blanca 1kg", price: 1.25, stock: 45, category: "Alimentos" },
-  { id: 102, name: "Arroz Blanco Premium 1kg", price: 1.10, stock: 30, category: "Alimentos" },
-  { id: 103, name: "Pasta Larga Spaghetti 500g", price: 0.95, stock: 25, category: "Alimentos" },
-  { id: 104, name: "Aceite Vegetal Comestible 1L", price: 2.40, stock: 18, category: "Alimentos" },
-  { id: 105, name: "Café Molido Gourmet 250g", price: 2.80, stock: 14, category: "Bebidas" },
-  { id: 106, name: "Azúcar Refinada 1kg", price: 1.30, stock: 22, category: "Alimentos" },
-  { id: 107, name: "Queso Blanco Llanero (kg)", price: 4.80, stock: 4.5, category: "Lácteos" },
-  { id: 108, name: "Leche Completa Pasteurizada 1L", price: 1.95, stock: 15, category: "Lácteos" },
-  { id: 109, name: "Refresco 2 Litros", price: 2.00, stock: 3.0, category: "Bebidas" },
-  { id: 110, name: "Mantequilla con Sal 250g", price: 1.75, stock: 16, category: "Lácteos" }
+  { id: 101, name: "Harina P.A.N. Blanca 1kg", price: 1.25, stock: 45, category: "Víveres", brand: "P.A.N.", image: "assets/prod_harina_pan.jpg" },
+  { id: 102, name: "Arroz Blanco Harvest Gold 1kg", price: 1.10, stock: 30, category: "Víveres", brand: "Harvest Gold", image: "assets/prod_arroz.jpg" },
+  { id: 103, name: "Pasta Spaghetti Italia Bella 500g", price: 0.95, stock: 25, category: "Víveres", brand: "Italia Bella", image: "assets/prod_pasta.jpg" },
+  { id: 104, name: "Aceite Vegetal Vatel 1L", price: 2.40, stock: 18, category: "Víveres", brand: "Vatel", image: "assets/prod_aceite.jpg" },
+  { id: 105, name: "Café Fama de América Gourmet 250g", price: 2.80, stock: 14, category: "Víveres", brand: "Fama de América", image: "assets/prod_cafe.jpg" },
+  { id: 106, name: "Azúcar Blanca Montalbán 1kg", price: 1.30, stock: 22, category: "Víveres", brand: "Montalbán", image: "assets/prod_azucar.jpg" },
+  { id: 107, name: "Queso Blanco Llanero Especial (kg)", price: 4.80, stock: 4.5, category: "Lácteos", brand: "Quesos Llaneros", image: "assets/prod_queso.jpg" },
+  { id: 108, name: "Leche Completa Parmalat 1L", price: 1.95, stock: 15, category: "Lácteos", brand: "Parmalat", image: "assets/prod_leche.jpg" },
+  { id: 109, name: "Refresco Coca-Cola Sabor Original 2L", price: 2.00, stock: 3.0, category: "Bebidas", brand: "Coca-Cola", image: "assets/prod_refresco.jpg" },
+  { id: 110, name: "Mantequilla con Sal Mavesa 250g", price: 1.75, stock: 16, category: "Lácteos", brand: "Mavesa", image: "assets/prod_mantequilla.jpg" },
+  { id: 111, name: "Jamón de Pierna Cocido Plumrose (kg)", price: 6.50, stock: 8.0, category: "Lácteos", brand: "Plumrose", image: "assets/prod_jamon.jpg" },
+  { id: 112, name: "Malta Polar Botella 250ml", price: 0.90, stock: 48, category: "Bebidas", brand: "Malta Polar", image: "assets/prod_malta.jpg" },
+  { id: 113, name: "Jugo Natural Yukery Naranja 1L", price: 1.60, stock: 12, category: "Bebidas", brand: "Yukery", image: "assets/prod_jugo.jpg" },
+  { id: 114, name: "Agua Mineral Natural Minalba 5L", price: 1.50, stock: 20, category: "Bebidas", brand: "Minalba", image: "assets/prod_agua.jpg" },
+  { id: 115, name: "Galletas Club Social Familiar", price: 1.15, stock: 24, category: "Snacks", brand: "Club Social", image: "assets/prod_galletas.jpg" },
+  { id: 116, name: "Chocolate Savoy Criollo de Leche 70g", price: 1.40, stock: 35, category: "Snacks", brand: "Savoy", image: "assets/prod_chocolate.jpg" }
 ];
 
 const DEFAULT_CUSTOMERS: Customer[] = [

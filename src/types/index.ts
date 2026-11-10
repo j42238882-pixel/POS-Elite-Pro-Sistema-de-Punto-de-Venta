@@ -10,6 +10,8 @@ export interface Product {
   stock: number;
   category?: string;
   barcode?: string;
+  brand?: string;
+  image?: string;
 }
 
 export interface Customer {
